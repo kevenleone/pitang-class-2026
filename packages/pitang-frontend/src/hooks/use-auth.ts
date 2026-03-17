@@ -1,8 +1,7 @@
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 import type { SignInForm } from "@/components/login-form";
-import { useEffect, useState, type SubmitEvent } from "react";
-import type { LoggedUser } from "@/types";
+import { type SubmitEvent } from "react";
 
 const baseURL = "https://dummyjson.com";
 
@@ -14,27 +13,22 @@ function getCookie(cookieName: string) {
 }
 
 export function useAuth() {
-  const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function getAuthenticatedUser() {
-      const response = await fetch("https://dummyjson.com/auth/me", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getCookie("@pitang/accessToken")}`,
-        },
-      });
+  async function getAuthenticatedUser() {
+    const response = await fetch("https://dummyjson.com/auth/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getCookie("@pitang/accessToken")}`,
+      },
+    });
 
-      if (!response.ok) {
-        return toast.error("Something went wrong");
-      }
-
-      setLoggedUser(await response.json());
+    if (!response.ok) {
+      return toast.error("Something went wrong");
     }
 
-    getAuthenticatedUser();
-  }, []);
+    return response.json();
+  }
 
   async function handleLogout() {
     document.cookie = "@pitang/accessToken=; path=/; Max-Age=0";
@@ -50,7 +44,7 @@ export function useAuth() {
 
     const response = await fetch(`${baseURL}/auth/login`, {
       body: JSON.stringify({
-        expiresInMins: 30,
+        expiresInMins: 90,
         username: data.username,
         password: data.password,
       }),
@@ -72,7 +66,7 @@ export function useAuth() {
   }
 
   return {
-    loggedUser,
+    getAuthenticatedUser,
     handleLogin,
     handleLogout,
   };

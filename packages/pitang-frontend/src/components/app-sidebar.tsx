@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
@@ -12,8 +12,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { FrameIcon, PieChartIcon, MapIcon, TerminalIcon, PackageIcon } from "lucide-react";
+import {
+  FrameIcon,
+  PieChartIcon,
+  MapIcon,
+  TerminalIcon,
+  PackageIcon,
+} from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { AppContext } from "@/context/AppContext";
 
 const data = {
   navMain: [],
@@ -42,7 +49,8 @@ const data = {
   ],
 };
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { loggedUser, handleLogout } = useAuth();
+  const { handleLogout } = useAuth();
+  const { loggedUser } = useContext(AppContext);
 
   return (
     <Sidebar variant="inset" {...props}>
