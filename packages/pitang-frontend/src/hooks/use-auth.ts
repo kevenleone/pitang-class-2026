@@ -1,9 +1,8 @@
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
-import type { SignInForm } from "@/components/login-form";
-import { type SubmitEvent } from "react";
-
-const baseURL = "https://dummyjson.com";
+import type { LoginSchema } from "@/zodSchemas";
+import fetcher from "@/lib/fetcher";
+import FetcherError from "@/lib/FetcherError";
 
 function getCookie(cookieName: string) {
   return document.cookie
@@ -16,18 +15,11 @@ export function useAuth() {
   const navigate = useNavigate();
 
   async function getAuthenticatedUser() {
-    const response = await fetch("https://dummyjson.com/auth/me", {
-      method: "GET",
+    return fetcher("/auth/me", {
       headers: {
         Authorization: `Bearer ${getCookie("@pitang/accessToken")}`,
       },
     });
-
-    if (!response.ok) {
-      return toast.error("Something went wrong");
-    }
-
-    return response.json();
   }
 
   async function handleLogout() {
@@ -36,33 +28,24 @@ export function useAuth() {
     navigate({ to: "/login" });
   }
 
-  async function handleLogin(
-    event: SubmitEvent<HTMLFormElement>,
-    data: SignInForm,
-  ) {
-    event.preventDefault();
-
-    const response = await fetch(`${baseURL}/auth/login`, {
-      body: JSON.stringify({
+  async function handleLogin(data: LoginSchema) {
+    try {
+      const response = await fetcher.post("/auth/login", {
         expiresInMins: 90,
         username: data.username,
         password: data.password,
-      }),
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
+      });
 
-    const json = await response.json();
+      toast.success("Welcome...");
 
-    if (!response.ok) {
-      return toast.error(json.message);
+      document.cookie = `@pitang/accessToken=${response.accessToken}; path=/; Max-Age=86400`;
+
+      navigate({ to: "/dashboard" });
+    } catch (error) {
+      if (error instanceof FetcherError) {
+        toast.error(error.info.message);
+      }
     }
-
-    toast.success("Welcome...");
-
-    document.cookie = `@pitang/accessToken=${json.accessToken}; path=/; Max-Age=86400`;
-
-    navigate({ to: "/dashboard" });
   }
 
   return {
