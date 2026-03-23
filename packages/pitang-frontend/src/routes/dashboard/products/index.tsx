@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import {
+  createFileRoute,
+  useLocation,
+  useNavigate,
+} from "@tanstack/react-router";
 import { GridIcon, ListIcon } from "lucide-react";
 
 import { fetchProducts } from "@/lib/api";
-import type { Product } from "@/types";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,34 +33,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useSWR from "swr";
 
 export const Route = createFileRoute("/dashboard/products/")({
   component: ProductsPage,
 });
 
-function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const limit = 12;
-  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+const limit = 12;
 
-  useEffect(() => {
-    async function loadProducts() {
-      setLoading(true);
-      try {
-        const data = await fetchProducts(page, limit);
-        setProducts(data.products);
-        setTotal(data.total);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadProducts();
-  }, [page]);
+function ProductsPage() {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const viewMode = (search as { viewMode?: string }).viewMode || "grid";
+  const page = Number((search as { page?: string }).page) || 1;
+
+  const { data, isLoading: loading } = useSWR(
+    `/products?page=${page}&limit=${limit}`,
+    () => fetchProducts(page, limit),
+  );
+
+  const total = data?.total || 0;
+  const products = data?.products;
 
   const totalPages = Math.ceil(total / limit);
 
@@ -106,14 +101,24 @@ function ProductsPage() {
           <Button
             variant={viewMode === "grid" ? "default" : "outline"}
             size="icon"
-            onClick={() => setViewMode("grid")}
+            onClick={() => {
+              navigate({
+                to: "/dashboard/products",
+                search: { ...search, viewMode: "grid" },
+              });
+            }}
           >
             <GridIcon className="h-4 w-4" />
           </Button>
           <Button
             variant={viewMode === "table" ? "default" : "outline"}
             size="icon"
-            onClick={() => setViewMode("table")}
+            onClick={() => {
+              navigate({
+                to: "/dashboard/products",
+                search: { ...search, viewMode: "table" },
+              });
+            }}
           >
             <ListIcon className="h-4 w-4" />
           </Button>
@@ -202,7 +207,12 @@ function ProductsPage() {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              onClick={() =>
+                navigate({
+                  to: "/dashboard/products",
+                  search: { ...search, page: page - 1 },
+                })
+              }
               className={
                 page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
               }
@@ -216,7 +226,12 @@ function ProductsPage() {
             ) : (
               <PaginationItem key={pageNum}>
                 <PaginationLink
-                  onClick={() => setPage(pageNum)}
+                  onClick={() =>
+                    navigate({
+                      to: "/dashboard/products",
+                      search: { ...search, page: pageNum },
+                    })
+                  }
                   isActive={page === pageNum}
                   className="cursor-pointer"
                 >
@@ -227,7 +242,12 @@ function ProductsPage() {
           )}
           <PaginationItem>
             <PaginationNext
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              onClick={() =>
+                navigate({
+                  to: "/dashboard/products",
+                  search: { ...search, page: page + 1 },
+                })
+              }
               className={
                 page === totalPages
                   ? "pointer-events-none opacity-50"

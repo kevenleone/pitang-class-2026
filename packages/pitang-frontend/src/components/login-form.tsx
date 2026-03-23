@@ -10,27 +10,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
 import { useState, type SubmitEvent } from "react";
-
-export type SignInForm = {
-  username: string;
-  password: string;
-};
+import { useAuth } from "@/hooks/use-auth";
+import { loginSchema } from "@/zodSchemas";
 
 export function LoginForm({
   className,
-  onSubmit,
   ...props
-}: React.ComponentProps<"form"> & {
-  onSubmit: (event: SubmitEvent<HTMLFormElement>, data: SignInForm) => void;
-}) {
+}: React.ComponentProps<"form">) {
+  const { handleLogin } = useAuth();
+
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const { data, error } = loginSchema.safeParse({
+      username,
+      password,
+    });
+
+    if (error) {
+      return console.error(error);
+    }
+
+    await handleLogin(data);
+  };
 
   return (
     <form
       {...props}
       className={cn("flex flex-col gap-6", className)}
-      onSubmit={(event) => onSubmit(event, { username, password })}
+      onSubmit={handleSubmit}
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
@@ -40,12 +51,11 @@ export function LoginForm({
           </p>
         </div>
         <Field>
-          <FieldLabel htmlFor="username">username</FieldLabel>
+          <FieldLabel htmlFor="username">Username</FieldLabel>
           <Input
             id="username"
             name="username"
             onChange={(event) => setUserName(event.target.value)}
-            required
             type="text"
             value={username}
           />
@@ -64,7 +74,6 @@ export function LoginForm({
             id="password"
             onChange={(event) => setPassword(event.target.value)}
             name="password"
-            required
             type="password"
             value={password}
           />

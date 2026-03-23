@@ -9,13 +9,41 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
+import { registerSchema, type RegisterSchema } from "@/zodSchemas";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+function sleep(timer: number) {
+  return new Promise((resolve) => setTimeout(() => resolve(null), timer));
+}
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const { formState, register, handleSubmit } = useForm<RegisterSchema>({
+    defaultValues: {
+      confirmPassword: "",
+      email: "",
+      password: "",
+      username: "",
+    },
+    mode: "onBlur",
+    resolver: zodResolver(registerSchema),
+  });
+
+  async function handleRegister(data: RegisterSchema) {
+    await sleep(3000);
+
+    console.log("Registered User ", data);
+  }
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={handleSubmit(handleRegister)}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Create your account</h1>
@@ -23,32 +51,71 @@ export function SignupForm({
             Fill in the form below to create your account
           </p>
         </div>
-        <Field>
-          <FieldLabel htmlFor="name">Full Name</FieldLabel>
-          <Input id="name" type="text" placeholder="John Doe" required />
+
+        <Field data-invalid={!!formState.errors.username}>
+          <FieldLabel htmlFor="username">User Name</FieldLabel>
+          <Input
+            aria-invalid={!!formState.errors.username}
+            id="username"
+            placeholder="johndoe"
+            {...register("username")}
+          />
         </Field>
-        <Field>
+
+        <Field data-invalid={!!formState.errors.email}>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required />
-          <FieldDescription>
-            We&apos;ll use this to contact you. We will not share your email
-            with anyone else.
-          </FieldDescription>
+          <Input
+            aria-invalid={!!formState.errors.email}
+            id="email"
+            placeholder="janedoe@example.com"
+            {...register("email")}
+          />
+
+          {formState.errors.email?.message && (
+            <FieldDescription>
+              {formState.errors.email?.message}
+            </FieldDescription>
+          )}
         </Field>
-        <Field>
+
+        <Field data-invalid={!!formState.errors.password}>
           <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input id="password" type="password" required />
-          <FieldDescription>
-            Must be at least 8 characters long.
-          </FieldDescription>
+          <Input
+            aria-invalid={!!formState.errors.password}
+            id="password"
+            type="password"
+            {...register("password")}
+          />
+
+          {formState.errors.password && (
+            <FieldDescription>
+              {formState.errors.password.message}
+            </FieldDescription>
+          )}
         </Field>
-        <Field>
+
+        <Field data-invalid={!!formState.errors.confirmPassword}>
           <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
-          <Input id="confirm-password" type="password" required />
-          <FieldDescription>Please confirm your password.</FieldDescription>
+          <Input
+            aria-invalid={!!formState.errors.confirmPassword}
+            id="confirm-password"
+            type="password"
+            {...register("confirmPassword")}
+          />
+
+          {formState.errors.confirmPassword && (
+            <FieldDescription>
+              {formState.errors.confirmPassword?.message}
+            </FieldDescription>
+          )}
         </Field>
         <Field>
-          <Button type="submit">Create Account</Button>
+          <Button
+            disabled={!formState.isValid || formState.isSubmitting}
+            type="submit"
+          >
+            {formState.isSubmitting ? "Creating..." : "Create Account"}
+          </Button>
         </Field>
         <FieldSeparator>Or continue with</FieldSeparator>
         <Field>

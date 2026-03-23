@@ -1,43 +1,52 @@
+import { createContext, useReducer, type PropsWithChildren } from "react";
+import useSWR from "swr";
+
 import { useAuth } from "@/hooks/use-auth";
 import type { LoggedUser } from "@/types";
-import React, {
-  createContext,
-  useEffect,
-  useState,
-  type PropsWithChildren,
-} from "react";
 
 type Theme = "dark" | "light";
 
-type AppContext = {
-  loggedUser: null | LoggedUser;
+type AppState = {
+  loggedUser: LoggedUser | null;
   theme: Theme;
-  setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 };
 
-const defaultContext = {
+type AppAction =
+  | { type: "SET_THEME"; payload: Theme }
+  | { type: "SET_LOGGED_USER"; payload: LoggedUser | null };
+
+const initialState: AppState = {
   loggedUser: null,
   theme: "light",
-  setTheme: () => null,
-} as const;
+};
+
+function appReducer(state: AppState, action: AppAction): AppState {
+  switch (action.type) {
+    case "SET_THEME":
+      return { ...state, theme: action.payload };
+    case "SET_LOGGED_USER":
+      return { ...state, loggedUser: action.payload };
+    default:
+      return state;
+  }
+}
+
+type AppContext = [AppState, React.Dispatch<AppAction>];
+
+const defaultContext: AppContext = [initialState, () => null];
 
 export const AppContext = createContext<AppContext>(defaultContext);
 
 export default function AppContextProvider({ children }: PropsWithChildren) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
+  const [state, dispatch] = useReducer(appReducer, initialState);
   const { getAuthenticatedUser } = useAuth();
 
-  useEffect(() => {
-    getAuthenticatedUser()
-      .then((response) => setLoggedUser(response))
-      .catch(console.error);
-  }, []);
+  const { data } = useSWR("/auth/me", getAuthenticatedUser, {
+    onSuccess: (data) => dispatch({ type: "SET_LOGGED_USER", payload: data }),
+  });
 
   return (
-    <AppContext.Provider
-      value={{ ...defaultContext, loggedUser, theme, setTheme }}
-    >
+    <AppContext.Provider value={[{ ...state, loggedUser: data }, dispatch]}>
       {children}
     </AppContext.Provider>
   );

@@ -50,7 +50,7 @@ const data = {
 };
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { handleLogout } = useAuth();
-  const { loggedUser } = useContext(AppContext);
+  const [{ loggedUser }] = useContext(AppContext);
 
   return (
     <Sidebar variant="inset" {...props}>
