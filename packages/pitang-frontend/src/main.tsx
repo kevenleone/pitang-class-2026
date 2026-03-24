@@ -4,9 +4,11 @@ import { routeTree } from "./routeTree.gen";
 import { Toaster } from "@/components/ui/sonner";
 import AppContextProvider from "./context/AppContext";
 
-import "./index.css";
 import { SWRConfig } from "swr";
 import swrCacheProvider from "./lib/swr-cache-provider";
+import fetcher from "./lib/fetcher";
+
+import "./index.css";
 
 const router = createRouter({ routeTree });
 declare module "@tanstack/react-router" {
@@ -16,7 +18,7 @@ declare module "@tanstack/react-router" {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <SWRConfig value={{ provider: swrCacheProvider }}>
+  <SWRConfig value={{ fetcher, provider: swrCacheProvider }}>
     <AppContextProvider>
       <RouterProvider router={router} />
       <Toaster />

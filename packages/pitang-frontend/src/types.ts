@@ -131,9 +131,32 @@ export interface Product {
   thumbnail: string;
 }
 
-export interface ProductsResponse {
-  products: Product[];
+// export interface ProductsResponse {
+//   products: Product[];
+//   total: number;
+//   skip: number;
+//   limit: number;
+// }
+
+export interface Post {
+  id: number;
+  title: string;
+  body: string;
+  tags: string[];
+  reactions: Reactions;
+  views: number;
+  userId: number;
+}
+
+export interface Reactions {
+  likes: number;
+  dislikes: number;
+}
+
+export type ApiResponse<T, K extends string> = {
   total: number;
   skip: number;
   limit: number;
-}
+} & {
+  [key in K]: T[];
+};

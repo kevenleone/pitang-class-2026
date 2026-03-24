@@ -42,8 +42,8 @@ const data = {
       icon: <MapIcon />,
     },
     {
-      name: "Todos",
-      url: "/dashboard/todos",
+      name: "Posts",
+      url: "/dashboard/posts",
       icon: <FrameIcon />,
     },
   ],
