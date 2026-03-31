@@ -1,0 +1,10 @@
+{
+  "name": "javascript-intro",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
