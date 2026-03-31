@@ -20,7 +20,10 @@ declare module "@tanstack/react-router" {
 createRoot(document.getElementById("root")!).render(
   <SWRConfig value={{ fetcher, provider: swrCacheProvider }}>
     <AppContextProvider>
-      <RouterProvider router={router} />
+      <RouterProvider
+        defaultPendingComponent={() => <h1>Loading...</h1>}
+        router={router}
+      />
       <Toaster />
     </AppContextProvider>
   </SWRConfig>,

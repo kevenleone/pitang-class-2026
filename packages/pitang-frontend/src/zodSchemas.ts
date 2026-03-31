@@ -39,5 +39,12 @@ export const registerSchema = loginSchema
     }
   });
 
+export const postSchema = z.object({
+  title: z.string().min(3),
+  body: z.string().min(3).max(1000),
+  tags: z.array(z.string()).min(1, "At least one tag is required"),
+});
+
 export type LoginSchema = z.infer<typeof loginSchema>;
+export type PostSchema = z.infer<typeof postSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;

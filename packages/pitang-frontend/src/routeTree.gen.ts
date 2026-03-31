@@ -20,6 +20,7 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as DashboardProductsIndexRouteImport } from './routes/dashboard/products/index'
 import { Route as DashboardPostsIndexRouteImport } from './routes/dashboard/posts/index'
 import { Route as DashboardPostsNewRouteImport } from './routes/dashboard/posts/new'
+import { Route as DashboardPostsIdRouteRouteImport } from './routes/dashboard/posts/$id/route'
 import { Route as DashboardPostsIdIndexRouteImport } from './routes/dashboard/posts/$id/index'
 import { Route as DashboardPostsIdEditRouteImport } from './routes/dashboard/posts/$id/edit'
 
@@ -77,15 +78,20 @@ const DashboardPostsNewRoute = DashboardPostsNewRouteImport.update({
   path: '/posts/new',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardPostsIdIndexRoute = DashboardPostsIdIndexRouteImport.update({
-  id: '/posts/$id/',
-  path: '/posts/$id/',
+const DashboardPostsIdRouteRoute = DashboardPostsIdRouteRouteImport.update({
+  id: '/posts/$id',
+  path: '/posts/$id',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardPostsIdIndexRoute = DashboardPostsIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardPostsIdRouteRoute,
+} as any)
 const DashboardPostsIdEditRoute = DashboardPostsIdEditRouteImport.update({
-  id: '/posts/$id/edit',
-  path: '/posts/$id/edit',
-  getParentRoute: () => DashboardRouteRoute,
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => DashboardPostsIdRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/posts/$id': typeof DashboardPostsIdRouteRouteWithChildren
   '/dashboard/posts/new': typeof DashboardPostsNewRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
@@ -125,6 +132,7 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/product/$id': typeof ProductIdRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/posts/$id': typeof DashboardPostsIdRouteRouteWithChildren
   '/dashboard/posts/new': typeof DashboardPostsNewRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
@@ -141,6 +149,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/product/$id'
     | '/dashboard/'
+    | '/dashboard/posts/$id'
     | '/dashboard/posts/new'
     | '/dashboard/posts/'
     | '/dashboard/products/'
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/product/$id'
     | '/dashboard/'
+    | '/dashboard/posts/$id'
     | '/dashboard/posts/new'
     | '/dashboard/posts/'
     | '/dashboard/products/'
@@ -263,19 +273,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPostsNewRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/posts/$id': {
+      id: '/dashboard/posts/$id'
+      path: '/posts/$id'
+      fullPath: '/dashboard/posts/$id'
+      preLoaderRoute: typeof DashboardPostsIdRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/posts/$id/': {
       id: '/dashboard/posts/$id/'
-      path: '/posts/$id'
+      path: '/'
       fullPath: '/dashboard/posts/$id/'
       preLoaderRoute: typeof DashboardPostsIdIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      parentRoute: typeof DashboardPostsIdRouteRoute
     }
     '/dashboard/posts/$id/edit': {
       id: '/dashboard/posts/$id/edit'
-      path: '/posts/$id/edit'
+      path: '/edit'
       fullPath: '/dashboard/posts/$id/edit'
       preLoaderRoute: typeof DashboardPostsIdEditRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      parentRoute: typeof DashboardPostsIdRouteRoute
     }
   }
 }
@@ -294,22 +311,35 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface DashboardRouteRouteChildren {
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardPostsNewRoute: typeof DashboardPostsNewRoute
-  DashboardPostsIndexRoute: typeof DashboardPostsIndexRoute
-  DashboardProductsIndexRoute: typeof DashboardProductsIndexRoute
+interface DashboardPostsIdRouteRouteChildren {
   DashboardPostsIdEditRoute: typeof DashboardPostsIdEditRoute
   DashboardPostsIdIndexRoute: typeof DashboardPostsIdIndexRoute
 }
 
+const DashboardPostsIdRouteRouteChildren: DashboardPostsIdRouteRouteChildren = {
+  DashboardPostsIdEditRoute: DashboardPostsIdEditRoute,
+  DashboardPostsIdIndexRoute: DashboardPostsIdIndexRoute,
+}
+
+const DashboardPostsIdRouteRouteWithChildren =
+  DashboardPostsIdRouteRoute._addFileChildren(
+    DashboardPostsIdRouteRouteChildren,
+  )
+
+interface DashboardRouteRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardPostsIdRouteRoute: typeof DashboardPostsIdRouteRouteWithChildren
+  DashboardPostsNewRoute: typeof DashboardPostsNewRoute
+  DashboardPostsIndexRoute: typeof DashboardPostsIndexRoute
+  DashboardProductsIndexRoute: typeof DashboardProductsIndexRoute
+}
+
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardPostsIdRouteRoute: DashboardPostsIdRouteRouteWithChildren,
   DashboardPostsNewRoute: DashboardPostsNewRoute,
   DashboardPostsIndexRoute: DashboardPostsIndexRoute,
   DashboardProductsIndexRoute: DashboardProductsIndexRoute,
-  DashboardPostsIdEditRoute: DashboardPostsIdEditRoute,
-  DashboardPostsIdIndexRoute: DashboardPostsIdIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

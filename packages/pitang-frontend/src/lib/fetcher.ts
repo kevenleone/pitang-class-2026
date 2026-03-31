@@ -14,6 +14,7 @@ const fetcher = async <T = any>(
   resource: RequestInfo,
   options?: RequestInit,
 ): Promise<T> => {
+  // await sleep();
   const response = await fetch(changeResource(resource), {
     ...options,
     headers: {

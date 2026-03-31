@@ -1,53 +1,101 @@
 import Page from "@/components/page";
-import { createFileRoute } from "@tanstack/react-router";
-import Table from "@/components/table";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import useSWR from "swr";
 import type { ApiResponse, Post } from "@/types";
+import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
+import type { ColumnDef } from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/posts/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const { data } = useSWR<ApiResponse<Post, "posts">>("/posts");
+
+  const columns: ColumnDef<Post>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row }) => <b>{row.getValue("id")}</b>,
+    },
+    { accessorKey: "title", header: "Title" },
+    {
+      accessorKey: "body",
+      header: "Body",
+      cell: ({ row }) => row.getValue("body")?.substring(0, 40) + "...",
+    },
+    { accessorKey: "views", header: "Views" },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate({ to: `/dashboard/posts/${row.getValue("id")}` })
+                }
+              >
+                View
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate({
+                    to: `/dashboard/posts/${row.getValue("id")}/edit`,
+                  })
+                }
+              >
+                Edit
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => {
+                  if (!confirm("Are you sure you want to delete this post?")) {
+                    return;
+                  }
+
+                  toast.info(`Post "${row.getValue("title")}" is deleted`);
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const posts = data?.posts ?? [];
 
   return (
     <Page title="Posts" subtitle="Manage your Blog Posts">
-      <Table
-        rows={posts}
-        columns={[
-          { id: "id", title: "ID", render: (id) => <b>{id}</b> },
-          { id: "title", title: "Title" },
-          {
-            id: "body",
-            title: "Body",
-            render: (body: string) => body.substring(0, 40) + "...",
-          },
-          {
-            id: "tags",
-            title: "Tags",
-            render: (tags: string[]) =>
-              tags.map((tag) => (
-                <span className="bg-slate-500 mx-1 px-2 py-1 text-white rounded-full">
-                  {tag}
-                </span>
-              )),
-          },
-          {
-            id: "reactions",
-            title: "Reactions",
-            render: (reactions: any) => (
-              <div>
-                Likes: {reactions.likes} &ensp; Dislikes: {reactions.dislikes}
-              </div>
-            ),
-          },
-          { id: "views", title: "Views" },
-        ]}
-        caption="A list of your recent posts."
-      />
+      <DataTable columns={columns} data={posts} />
     </Page>
   );
 }
+
+//  <Page title="Posts" subtitle="Manage your Blog Posts">
+//       <Table
+//         rows={posts}
+//         columns=}
+//         caption="A list of your recent posts."
+//       />
+//     </Page>
