@@ -1,0 +1,22 @@
+info:
+  name: Post User
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:3333/api/users
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Keven Leone",
+        "username": "kevenleone"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
