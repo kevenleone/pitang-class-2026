@@ -1,0 +1,25 @@
+info:
+  name: Login
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://localhost:3333/api/users
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Keven",
+        "lastName": "Leone",
+        "password": "123456",
+        "email": "keven.leoene@a3ebc.me",
+        "bornDate": "1996-02-19T23:30:59.249Z"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

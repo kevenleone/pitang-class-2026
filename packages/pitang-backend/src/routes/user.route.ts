@@ -1,21 +1,55 @@
+import bcrypt from "bcryptjs";
 import express from "express";
+import jsonwebtoken from "jsonwebtoken";
+import z from "zod";
 
-import crypto from "node:crypto";
+import { prisma } from "../core/PrismaClient";
+import { userSchema } from "../schemas";
+import { environment } from "../core/EnvVars";
 
 const userRouter = express.Router();
 
-let users = [] as {
-  id: string;
-  name: string;
-  username: string;
-}[];
+userRouter.post("/login", async (request, response) => {
+  const { email, password } = request.body;
 
-userRouter.get("/users", (request, response) => response.json(users));
+  if (!email || !password) {
+    return response.status(400).json({ message: "Invalid credentials" });
+  }
 
-userRouter.get("/users/:id", (request, response) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    return response.status(400).json({ message: "User not found" });
+  }
+
+  if (bcrypt.compareSync(password, user.password)) {
+    delete (user as any).password;
+
+    return response.status(200).json({
+      token: jsonwebtoken.sign(user, environment.JWT_SECRET, {
+        expiresIn: "30minutes",
+      }),
+    });
+  }
+
+  response.status(400).json({ message: "Invalid password" });
+});
+
+userRouter.get("/users", async (request, response) => {
+  const users = await prisma.user.findMany({
+    omit: { password: true },
+  });
+
+  response.json(users);
+});
+
+userRouter.get("/users/:id", async (request, response) => {
   const id = request.params.id;
 
-  const user = users.find((user) => user.id === id);
+  const user = await prisma.user.findUnique({
+    omit: { password: true },
+    where: { id },
+  });
 
   if (!user) {
     return response.status(404).json({ message: "User not exists" });
@@ -24,43 +58,44 @@ userRouter.get("/users/:id", (request, response) => {
   response.json(user);
 });
 
-userRouter.post("/users", (request, response) => {
-  const body = request.body;
+userRouter.post("/users", async (request, response) => {
+  const { error, data } = userSchema.safeParse(request.body);
 
-  const user = {
-    id: crypto.randomUUID(),
-    name: body.name,
-    username: body.username,
-  };
+  if (error) {
+    return response.status(400).json(z.treeifyError(error).properties);
+  }
 
-  users.push(user);
+  let user = await prisma.user.findUnique({ where: { email: data.email } });
+
+  if (user) {
+    return response.status(409).json({ message: "User already registered" });
+  }
+
+  const salt = bcrypt.genSaltSync(10);
+
+  data.password = await bcrypt.hashSync(data.password, salt);
+
+  user = await prisma.user.create({ data });
 
   response.status(201).json(user);
 });
 
-userRouter.put("/users/:id", (request, response) => {
+userRouter.put("/users/:id", async (request, response) => {
   const {
     body,
     params: { id },
   } = request;
 
-  users = users.map((user) => {
-    if (user.id === id) {
-      return {
-        ...user,
-        name: body.name,
-        username: body.username,
-      };
-    }
-
-    return user;
+  const user = await prisma.user.update({
+    data: body,
+    where: { id },
   });
 
-  response.json(users);
+  response.json(user);
 });
 
-userRouter.delete("/users/:id", (request, response) => {
-  users = users.filter((user) => user.id !== request.params.id);
+userRouter.delete("/users/:id", async (request, response) => {
+  await prisma.user.delete({ where: { id: request.params.id } });
 
   response.status(204).send();
 });
