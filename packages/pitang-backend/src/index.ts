@@ -3,8 +3,11 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import userRouter from "./routes/user.route";
+import userRouter from "./http/routes/user.route";
 import { environment } from "./core/EnvVars";
+import { errorFallbackMiddleware } from "./http/middlewares/error.fallback.middleware";
+import { authMiddleware } from "./http/middlewares/auth.middleware";
+import { postRouter } from "./http/routes/post.route";
 
 const PORT = environment.HTTP_PORT;
 
@@ -21,24 +24,16 @@ app.use(
 );
 app.use(morgan("dev"));
 app.use(helmet());
+app.use(authMiddleware);
 
 app.get("/", (request, response) => {
   response.send({ message: "Hello world" });
 });
 
 app.use("/api", userRouter);
+app.use("/api", postRouter);
 
-app.use((err, request, response, next) => {
-  console.error(err.stack);
-
-  if (environment.NODE_ENV === "development") {
-    return response
-      .status(400)
-      .json({ message: "Something went wrong", stack: err });
-  }
-
-  response.status(400).json({ message: "Something went wrong" });
-});
+app.use(errorFallbackMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Running on PORT ${PORT}`);

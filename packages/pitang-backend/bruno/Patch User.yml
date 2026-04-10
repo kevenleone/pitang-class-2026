@@ -4,14 +4,17 @@ info:
   seq: 3
 
 http:
-  method: POST
-  url: http://localhost:3333/api/users
+  method: PUT
+  url: http://localhost:3333/api/users/2e43f35a-19c3-4c50-88b0-682a5d9e9bb71
   body:
     type: json
     data: |-
       {
-        "name": "Keven Leone",
-        "username": "kevenleone"
+        "firstName": "Keven",
+        "lastName": "Leone dos Santos",
+        "password": "123456",
+        "email": "keven.leone@abc.me",
+        "bornDate": "1996-02-19T23:30:59.249Z"
       }
   auth: inherit
 
