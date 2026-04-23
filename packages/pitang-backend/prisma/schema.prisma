@@ -20,6 +20,7 @@ model User {
   lastName  String
   password  String
   bornDate  DateTime
+  verificationToken String?
 
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
