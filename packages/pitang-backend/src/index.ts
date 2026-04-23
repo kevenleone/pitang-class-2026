@@ -8,6 +8,18 @@ import { environment } from "./core/EnvVars";
 import { errorFallbackMiddleware } from "./http/middlewares/error.fallback.middleware";
 import { authMiddleware } from "./http/middlewares/auth.middleware";
 import { postRouter } from "./http/routes/post.route";
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { ExpressAdapter } from "@bull-board/express";
+import { registerMailQueue } from "./queues/register.mail.queue";
+
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath("/admin/queues");
+
+createBullBoard({
+  queues: [new BullMQAdapter(registerMailQueue)],
+  serverAdapter,
+});
 
 const PORT = environment.HTTP_PORT;
 
@@ -32,6 +44,7 @@ app.get("/", (request, response) => {
 
 app.use("/api", userRouter);
 app.use("/api", postRouter);
+app.use("/admin/queues", serverAdapter.getRouter());
 
 app.use(errorFallbackMiddleware);
 

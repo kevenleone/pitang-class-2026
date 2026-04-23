@@ -1,11 +1,16 @@
 import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
+import crypto from "crypto";
 import z from "zod";
 
 import { environment } from "../../core/EnvVars";
 import { prisma } from "../../core/PrismaClient";
 import { userSchema } from "../../schemas";
 import jsonwebtoken from "jsonwebtoken";
+import {
+  registerMailQueue,
+  REGISTER_EMAIL_JOB,
+} from "../../queues/register.mail.queue";
 
 export async function getUsers(request: Request, response: Response) {
   const users = await prisma.user.findMany({
@@ -32,7 +37,13 @@ export async function postUser(request: Request, response: Response) {
 
   data.password = await bcrypt.hashSync(data.password, salt);
 
-  user = await prisma.user.create({ data });
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+
+  user = await prisma.user.create({
+    data: { ...data, verificationToken },
+  });
+
+  await registerMailQueue.add(REGISTER_EMAIL_JOB, user, {attempts: 3, backoff: 10000});
 
   response.status(201).json(user);
 }
@@ -51,6 +62,7 @@ export async function getUser(request: Request, response: Response) {
 
   response.json(user);
 }
+
 export async function patchUser(request: Request, response: Response) {
   const {
     body,

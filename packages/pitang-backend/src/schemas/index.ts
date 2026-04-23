@@ -1,4 +1,5 @@
 import z from "zod";
+import crypto from "crypto";
 
 export const userSchema = z.object({
   firstName: z.string(),
