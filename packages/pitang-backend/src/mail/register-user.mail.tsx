@@ -3,6 +3,7 @@ import type { User } from "../generated/prisma/client";
 
 import { mailProvider } from "./mail.provider";
 import { RegisterUserTemplate } from "./templates/RegisterUserTemplate";
+import { loggerWorker } from "../core/Logger";
 
 export async function registerUserEmail(user: User) {
   const info = await mailProvider.sendMail({
@@ -12,5 +13,5 @@ export async function registerUserEmail(user: User) {
     html: await render(<RegisterUserTemplate {...user} />),
   });
 
-  console.log("Message sent: %s", info.messageId);
+  loggerWorker.info("Message sent: " + info.messageId);
 }

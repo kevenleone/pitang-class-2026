@@ -12,6 +12,7 @@ import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
 import { registerMailQueue } from "./queues/register.mail.queue";
+import { logger } from "./core/Logger";
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath("/admin/queues");
@@ -49,5 +50,5 @@ app.use("/admin/queues", serverAdapter.getRouter());
 app.use(errorFallbackMiddleware);
 
 app.listen(PORT, () => {
-  console.log(`Running on PORT ${PORT}`);
+  logger.info(`Running on PORT ${PORT}`)
 });

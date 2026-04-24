@@ -6,6 +6,7 @@ import {
   registerMailQueue,
   REGISTER_EMAIL_JOB,
 } from "./register.mail.queue";
+import { loggerWorker } from "../core/Logger";
 
 export const registerEmailWorker = new Worker(
   registerMailQueue.name,
@@ -19,9 +20,9 @@ export const registerEmailWorker = new Worker(
 );
 
 registerEmailWorker.on("completed", (job) => {
-  console.log(`Job ${job.id} completed`);
+  loggerWorker.info(`Job ${job.id} completed`);
 });
 
 registerEmailWorker.on("failed", (job, err) => {
-  console.error(`Job ${job?.id} failed:`, err);
+  loggerWorker.error(`Job ${job?.id} failed:` + err);
 });

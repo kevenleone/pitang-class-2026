@@ -1,3 +1,5 @@
+import { loggerWorker } from "./core/Logger";
+
 import "./queues/register-email.worker";
 
-console.log("Worker is running and waiting for jobs...");
+loggerWorker.info("Running and waiting for jobs...");

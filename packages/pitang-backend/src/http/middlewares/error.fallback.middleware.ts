@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { environment } from "../../core/EnvVars";
+import { logger } from "../../core/Logger";
 
 export function errorFallbackMiddleware(
   error: Error,
@@ -7,7 +8,7 @@ export function errorFallbackMiddleware(
   response: Response,
   next: NextFunction,
 ) {
-  console.error(error.stack);
+  logger.error(error);
 
   if (environment.NODE_ENV === "development") {
     return response

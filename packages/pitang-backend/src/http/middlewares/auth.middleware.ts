@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 import { environment } from "../../core/EnvVars";
 
 const allowedPaths = {
-    "GET": ["/api/post/*", "/admin/queues/*", "/admin/queues"],
+    "GET": ["/","/api/post/*", "/admin/queues/*", "/admin/queues"],
     "POST": ["/api/login", "/api/users"],
     "PUT": ["/admin/queues/*", "/admin/queues"],
 } as const

@@ -11,6 +11,7 @@ import {
   registerMailQueue,
   REGISTER_EMAIL_JOB,
 } from "../../queues/register.mail.queue";
+import { logger } from "../../core/Logger";
 
 export async function getUsers(request: Request, response: Response) {
   const users = await prisma.user.findMany({
@@ -30,6 +31,8 @@ export async function postUser(request: Request, response: Response) {
   let user = await prisma.user.findUnique({ where: { email: data.email } });
 
   if (user) {
+    logger.error({ emailAddress: data.email }, "User already registered");
+
     return response.status(409).json({ message: "User already registered" });
   }
 
@@ -44,6 +47,8 @@ export async function postUser(request: Request, response: Response) {
   });
 
   await registerMailQueue.add(REGISTER_EMAIL_JOB, user, {attempts: 3, backoff: 10000});
+
+  logger.info(user, "User registered");
 
   response.status(201).json(user);
 }
