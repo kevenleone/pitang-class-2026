@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
-import { useState, type SubmitEvent } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginSchema } from "@/zodSchemas";
 import { useAuth } from "@/hooks/use-auth";
-import { loginSchema } from "@/zodSchemas";
 
 export function LoginForm({
   className,
@@ -19,29 +20,24 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const { handleLogin } = useAuth();
 
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const { formState, register, handleSubmit } = useForm<LoginSchema>({
+    defaultValues: {
+      password: "",
+      username: "",
+    },
+    mode: "onBlur",
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const { data, error } = loginSchema.safeParse({
-      username,
-      password,
-    });
-
-    if (error) {
-      return console.error(error);
-    }
-
+  async function onSubmit(data: LoginSchema) {
     await handleLogin(data);
-  };
+  }
 
   return (
     <form
-      {...props}
       className={cn("flex flex-col gap-6", className)}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
+      {...props}
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
@@ -50,17 +46,22 @@ export function LoginForm({
             Enter your username below to login to your account
           </p>
         </div>
-        <Field>
+
+        <Field data-invalid={!!formState.errors.username}>
           <FieldLabel htmlFor="username">Username</FieldLabel>
           <Input
+            aria-invalid={!!formState.errors.username}
             id="username"
-            name="username"
-            onChange={(event) => setUserName(event.target.value)}
-            type="text"
-            value={username}
+            {...register("username")}
           />
+          {formState.errors.username?.message && (
+            <FieldDescription>
+              {formState.errors.username?.message}
+            </FieldDescription>
+          )}
         </Field>
-        <Field>
+
+        <Field data-invalid={!!formState.errors.password}>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
             <a
@@ -71,15 +72,25 @@ export function LoginForm({
             </a>
           </div>
           <Input
+            aria-invalid={!!formState.errors.password}
             id="password"
-            onChange={(event) => setPassword(event.target.value)}
-            name="password"
             type="password"
-            value={password}
+            {...register("password")}
           />
+          {formState.errors.password?.message && (
+            <FieldDescription>
+              {formState.errors.password?.message}
+            </FieldDescription>
+          )}
         </Field>
+
         <Field>
-          <Button type="submit">Login</Button>
+          <Button
+            disabled={!formState.isValid || formState.isSubmitting}
+            type="submit"
+          >
+            {formState.isSubmitting ? "Logging in..." : "Login"}
+          </Button>
         </Field>
         <FieldSeparator>Or continue with</FieldSeparator>
         <Field>
