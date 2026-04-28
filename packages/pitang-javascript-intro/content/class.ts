@@ -1,21 +1,21 @@
 class Animal {
-  protected nome: string;
+    protected nome: string;
 
-  constructor(nome: string) {
-    this.nome = nome;
-  }
+    constructor(nome: string) {
+        this.nome = nome;
+    }
 
-  public falar() {
-    console.log(this.nome + " emite um barulho.");
-  }
+    public falar() {
+        console.log(this.nome + ' emite um barulho.');
+    }
 }
 
 class Cachorro extends Animal {
-  public override falar() {
-    console.log(this.nome + " latidos.");
-  }
+    public override falar() {
+        console.log(this.nome + ' latidos.');
+    }
 }
 
-let cachorro = new Cachorro("Mat");
+const cachorro = new Cachorro('Mat');
 
 cachorro.falar();

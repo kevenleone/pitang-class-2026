@@ -1,20 +1,20 @@
 // truthy
 // falsy
 
-const food: string = "pizza";
+const food: string = 'pizza';
 
 switch (food) {
-  case "pizza": {
-    console.log("Muita pizza!!!");
+    case 'pizza': {
+        console.log('Muita pizza!!!');
 
-    break;
-  }
+        break;
+    }
 
-  case "lasagna": {
-    break;
-  }
+    case 'lasagna': {
+        break;
+    }
 
-  default: {
-    console.log("Outra comida...");
-  }
+    default: {
+        console.log('Outra comida...');
+    }
 }

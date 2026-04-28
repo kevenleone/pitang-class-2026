@@ -1,17 +1,18 @@
 {
-  "name": "@pitang/pitang-e2e",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "cypress": "^15.14.1"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+    "name": "@pitang/pitang-e2e",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "cypress": "^15.14.1"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    }
 }

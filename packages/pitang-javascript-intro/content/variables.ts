@@ -1,8 +1,8 @@
 interface CompanyWithRegion {
-  region: {
-    city: string;
-    country: string;
-  };
+    region: {
+        city: string;
+        country: string;
+    };
 }
 
 // interface Company extends CompanyWithRegion {
@@ -10,18 +10,18 @@ interface CompanyWithRegion {
 // }
 
 type Company = {
-  name: string | undefined;
+    name: string | undefined;
 } & CompanyWithRegion;
 
 const company: Company = {
-  name: "Pitang",
-  region: {
-    country: "Brazil",
-    city: "Recife",
-  },
+    name: 'Pitang',
+    region: {
+        country: 'Brazil',
+        city: 'Recife',
+    },
 };
 
-company.name = "Pitang Recife";
+company.name = 'Pitang Recife';
 
 delete company.name;
 
@@ -32,14 +32,14 @@ const name = null; // Nulo
 const age = undefined; // Undefined
 const year = 2020; // Number
 const bigint = Number.MAX_VALUE;
-const name2 = "keven";
+const name2 = 'keven';
 const object = {
-  active,
-  name,
-  age,
-  year,
-  bigint,
-  name2,
+    active,
+    name,
+    age,
+    year,
+    bigint,
+    name2,
 };
 
 delete object.active;

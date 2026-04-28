@@ -307,9 +307,7 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthRegisterRoute: AuthRegisterRoute,
 }
 
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
-)
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(AuthRouteRouteChildren)
 
 interface DashboardPostsIdRouteRouteChildren {
   DashboardPostsIdEditRoute: typeof DashboardPostsIdEditRoute
@@ -321,10 +319,9 @@ const DashboardPostsIdRouteRouteChildren: DashboardPostsIdRouteRouteChildren = {
   DashboardPostsIdIndexRoute: DashboardPostsIdIndexRoute,
 }
 
-const DashboardPostsIdRouteRouteWithChildren =
-  DashboardPostsIdRouteRoute._addFileChildren(
-    DashboardPostsIdRouteRouteChildren,
-  )
+const DashboardPostsIdRouteRouteWithChildren = DashboardPostsIdRouteRoute._addFileChildren(
+  DashboardPostsIdRouteRouteChildren,
+)
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute

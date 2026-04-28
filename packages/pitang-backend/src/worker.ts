@@ -1,5 +1,5 @@
-import { loggerWorker } from "./core/Logger";
+import { loggerWorker } from './core/Logger';
 
-import "./queues/register-email.worker";
+import './queues/register-email.worker';
 
-loggerWorker.info("Running and waiting for jobs...");
+loggerWorker.info('Running and waiting for jobs...');

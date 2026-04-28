@@ -1,71 +1,71 @@
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
+import { createFileRoute, useLoaderData } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 
-export const Route = createFileRoute("/dashboard/posts/$id/")({
-  component: RouteComponent,
+export const Route = createFileRoute('/dashboard/posts/$id/')({
+    component: RouteComponent,
 });
 
 function RouteComponent() {
-  const post = useLoaderData({ from: "/dashboard/posts/$id" });
+    const post = useLoaderData({ from: '/dashboard/posts/$id' });
 
-  return (
-    <div className="max-w-3xl mx-auto p-6">
-      <Link
-        to="/dashboard/posts"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-4"
-      >
-        ← Back to posts
-      </Link>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">{post.title}</CardTitle>
-          <CardDescription>By User {post.userId}</CardDescription>
-          <CardAction>
-            <Button
-              render={
-                <Link
-                  to="/dashboard/posts/$id/edit"
-                  params={{ id: post.id.toString() }}
-                >
-                  Edit
-                </Link>
-              }
-              size="sm"
-            />
-          </CardAction>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <div>
-            <p className="leading-7">{post.body}</p>
-          </div>
+    return (
+        <div className="mx-auto max-w-3xl p-6">
+            <Link
+                to="/dashboard/posts"
+                className="text-muted-foreground hover:text-foreground mb-4 inline-flex items-center gap-1.5 text-sm"
+            >
+                ← Back to posts
+            </Link>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-2xl">{post.title}</CardTitle>
+                    <CardDescription>By User {post.userId}</CardDescription>
+                    <CardAction>
+                        <Button
+                            render={
+                                <Link
+                                    to="/dashboard/posts/$id/edit"
+                                    params={{ id: post.id.toString() }}
+                                >
+                                    Edit
+                                </Link>
+                            }
+                            size="sm"
+                        />
+                    </CardAction>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-6">
+                    <div>
+                        <p className="leading-7">{post.body}</p>
+                    </div>
 
-          <div className="flex flex-wrap gap-2">
-            {post.tags?.map((tag: string) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+                    <div className="flex flex-wrap gap-2">
+                        {post.tags?.map((tag: string) => (
+                            <span
+                                key={tag}
+                                className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+                            >
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
 
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <span>👍 {post.reactions?.likes} likes</span>
-            <span>👎 {post.reactions?.dislikes} dislikes</span>
-            <span>👁️ {post.views} views</span>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+                    <div className="text-muted-foreground flex items-center gap-6 text-sm">
+                        <span>👍 {post.reactions?.likes} likes</span>
+                        <span>👎 {post.reactions?.dislikes} dislikes</span>
+                        <span>👁️ {post.views} views</span>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    );
 }

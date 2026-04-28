@@ -1,26 +1,26 @@
 // ...
 
 const user = {
-  name: "Keven",
-  obj: {
-    name: "Murilo",
-  },
+    name: 'Keven',
+    obj: {
+        name: 'Murilo',
+    },
 };
 
 const user2 = {
-  ...user.obj,
-  name: "Keven",
-  city: "Recife",
+    ...user.obj,
+    name: 'Keven',
+    city: 'Recife',
 };
 
-const { name = "Keven", ...userxxx } = user2;
+const { name = 'Keven', ...userxxx } = user2;
 
-const name2 = user2.name || "Keven2";
+const name2 = user2.name || 'Keven2';
 
-const users = ["Keven", "Beatriz", "Caio"];
+const users = ['Keven', 'Beatriz', 'Caio'];
 const users2 = [...users];
 
-users2.push("Marcio");
+users2.push('Marcio');
 users2.pop();
 users2.pop();
 
