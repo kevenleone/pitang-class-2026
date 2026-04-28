@@ -1,3 +1,4 @@
+import perfectionist from 'eslint-plugin-perfectionist';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
@@ -18,12 +19,13 @@ export default tseslint.config(
             '**/*.gen.js',
         ],
     },
-
     js.configs.recommended,
     ...tseslint.configs.recommended,
-
     {
         files: ['**/*.{ts,tsx}'],
+        plugins: {
+            perfectionist,
+        },
         languageOptions: {
             ecmaVersion: 'latest',
             globals: globals.node,
@@ -31,6 +33,63 @@ export default tseslint.config(
                 projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
+        },
+        rules: {
+            'perfectionist/sort-imports': [
+                'error',
+                {
+                    type: 'natural',
+                    order: 'asc',
+                    groups: [
+                        'side-effect',
+                        'builtin',
+                        'external',
+                        'internal',
+                        ['parent', 'sibling', 'index'],
+                        'type',
+                        'style',
+                        'unknown',
+                    ],
+                    newlinesBetween: 'ignore',
+                    internalPattern: ['^@/'],
+                },
+            ],
+            'perfectionist/sort-named-imports': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-named-exports': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-exports': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-objects': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-interfaces': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-union-types': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-intersection-types': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-classes': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
+            'perfectionist/sort-maps': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
         },
     },
 
@@ -51,6 +110,10 @@ export default tseslint.config(
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
+            'perfectionist/sort-jsx-props': [
+                'error',
+                { type: 'natural', order: 'asc' },
+            ],
             'react-refresh/only-export-components': 'warn',
         },
         languageOptions: {
