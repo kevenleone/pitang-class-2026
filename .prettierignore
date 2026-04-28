@@ -1,0 +1,15 @@
+node_modules
+dist
+out
+*.tgz
+coverage
+*.lcov
+bun.lock
+.eslintcache
+.cache
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+**/generated/**
+*.gen.ts
+*.gen.js

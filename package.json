@@ -1,19 +1,30 @@
 {
-  "name": "pitang",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/nodemailer": "^8.0.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "dependencies": {
-    "nodemailer": "^8.0.5"
-  }
+    "name": "pitang",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "bun --filter '*' dev",
+        "build": "bun --filter '*' build",
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.1",
+        "@types/bun": "latest",
+        "eslint": "^9.39.1",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.4.24",
+        "globals": "^16.5.0",
+        "prettier": "^3.5.3",
+        "prettier-plugin-tailwindcss": "^0.6.11",
+        "typescript-eslint": "^8.48.0"
+    }
 }
