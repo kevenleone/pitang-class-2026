@@ -1,8 +1,8 @@
-import { toast } from 'sonner';
 import { useNavigate } from '@tanstack/react-router';
-import type { LoginSchema } from '@/zodSchemas';
+import { toast } from 'sonner';
 import fetcher from '@/lib/fetcher';
 import FetcherError from '@/lib/FetcherError';
+import type { LoginSchema } from '@/zodSchemas';
 
 function getCookie(cookieName: string) {
     return document.cookie
@@ -32,8 +32,8 @@ export function useAuth() {
         try {
             const response = await fetcher.post('/auth/login', {
                 expiresInMins: 90,
-                username: data.username,
                 password: data.password,
+                username: data.username,
             });
 
             toast.success('Welcome...');

@@ -9,15 +9,15 @@ interface CompanyWithRegion {
 //   name: string | undefined;
 // }
 
-type Company = {
+type Company = CompanyWithRegion & {
     name: string | undefined;
-} & CompanyWithRegion;
+};
 
 const company: Company = {
     name: 'Pitang',
     region: {
-        country: 'Brazil',
         city: 'Recife',
+        country: 'Brazil',
     },
 };
 
@@ -35,11 +35,11 @@ const bigint = Number.MAX_VALUE;
 const name2 = 'keven';
 const object = {
     active,
-    name,
     age,
-    year,
     bigint,
+    name,
     name2,
+    year,
 };
 
 delete object.active;

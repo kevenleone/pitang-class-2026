@@ -1,8 +1,7 @@
-import type { Request, Response } from 'express';
 import z from 'zod';
-
-import { paginationQuery, postSchema } from '../../schemas';
 import { prisma } from '../../core/PrismaClient';
+import { paginationQuery, postSchema } from '../../schemas';
+import type { Request, Response } from 'express';
 
 export async function getPost(request: Request, response: Response) {
     const { slug } = request.params;

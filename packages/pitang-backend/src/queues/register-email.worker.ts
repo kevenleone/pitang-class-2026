@@ -1,12 +1,12 @@
 import { Worker } from 'bullmq';
-import type { User } from '../generated/prisma/client';
+import { loggerWorker } from '../core/Logger';
 import { registerUserEmail } from '../mail/register-user.mail';
 import {
     connection,
-    registerMailQueue,
     REGISTER_EMAIL_JOB,
+    registerMailQueue,
 } from './register.mail.queue';
-import { loggerWorker } from '../core/Logger';
+import type { User } from '../generated/prisma/client';
 
 export const registerEmailWorker = new Worker(
     registerMailQueue.name,

@@ -1,5 +1,11 @@
+import {
+    FrameIcon,
+    MapIcon,
+    PackageIcon,
+    PieChartIcon,
+    TerminalIcon,
+} from 'lucide-react';
 import { useContext } from 'react';
-
 import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';
@@ -12,39 +18,32 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import {
-    FrameIcon,
-    PieChartIcon,
-    MapIcon,
-    TerminalIcon,
-    PackageIcon,
-} from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
 import { AppContext } from '@/context/AppContext';
+import { useAuth } from '@/hooks/use-auth';
 
 const data = {
     navMain: [],
     navSecondary: [],
     projects: [
         {
+            icon: <PieChartIcon />,
             name: 'Dashboard',
             url: '/dashboard',
-            icon: <PieChartIcon />,
         },
         {
+            icon: <PackageIcon />,
             name: 'Products',
             url: '/dashboard/products',
-            icon: <PackageIcon />,
         },
         {
+            icon: <MapIcon />,
             name: 'Users',
             url: '/dashboard/users',
-            icon: <MapIcon />,
         },
         {
+            icon: <FrameIcon />,
             name: 'Posts',
             url: '/dashboard/posts',
-            icon: <FrameIcon />,
         },
     ],
 };
@@ -57,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" render={<a href="#" />}>
+                        <SidebarMenuButton render={<a href="#" />} size="lg">
                             <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                                 <TerminalIcon className="size-4" />
                             </div>
@@ -75,7 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavProjects projects={data.projects} />
-                <NavSecondary items={data.navSecondary} className="mt-auto" />
+                <NavSecondary className="mt-auto" items={data.navSecondary} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type Task = {
     completed: boolean;
@@ -6,12 +6,12 @@ type Task = {
     title: string;
 };
 
-type TimerMode = 'work' | 'break' | 'longBreak';
+type TimerMode = 'break' | 'longBreak' | 'work';
 
 const TIMER_CONFIG = {
-    work: 25 * 60,
     break: 5 * 60,
     longBreak: 15 * 60,
+    work: 25 * 60,
 };
 
 function formatTime(seconds: number): string {
@@ -21,15 +21,15 @@ function formatTime(seconds: number): string {
 }
 
 const modeLabel = {
-    work: 'Focus',
     break: 'Short Break',
     longBreak: 'Long Break',
+    work: 'Focus',
 };
 
 const modeColors = {
-    work: 'text-red-400',
     break: 'text-green-400',
     longBreak: 'text-blue-400',
+    work: 'text-red-400',
 };
 
 function Timer({ onComplete }: { onComplete: () => void }) {
@@ -87,12 +87,12 @@ function Timer({ onComplete }: { onComplete: () => void }) {
             <div className="mb-6 flex gap-2">
                 {(['work', 'break', 'longBreak'] as TimerMode[]).map((m) => (
                     <button
-                        key={m}
                         className={`rounded-full px-3 py-1 text-sm transition-colors ${
                             mode === m
                                 ? 'bg-white/20 text-white'
                                 : 'text-white/50 hover:text-white/70'
                         }`}
+                        key={m}
                         onClick={() => switchMode(m)}
                     >
                         {modeLabel[m]}
@@ -156,11 +156,11 @@ function Tasks() {
             <div className="mb-6 flex gap-2">
                 <input
                     className="flex-1 rounded-lg border border-white/20 bg-white/10 p-3 text-white placeholder-white/40 focus:border-white/40 focus:outline-none"
+                    onChange={(event) => setInput(event.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && onSaveTask()}
                     placeholder="Add a task..."
                     type="text"
                     value={input}
-                    onChange={(event) => setInput(event.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && onSaveTask()}
                 />
                 <button
                     className="rounded-lg bg-white px-5 py-3 font-medium text-slate-900 transition-colors hover:bg-gray-100"
@@ -206,7 +206,7 @@ export default function Pomodoro() {
 
     return (
         <div className="min-h-screen w-full bg-slate-900 text-white">
-            <Timer onComplete={() => setKey((k) => k + 1)} key={key} />
+            <Timer key={key} onComplete={() => setKey((k) => k + 1)} />
 
             <div className="mt-4 border-t border-white/10">
                 <h2 className="py-6 text-center text-xl font-light text-white/70">

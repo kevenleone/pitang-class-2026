@@ -24,8 +24,8 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
-        data,
         columns,
+        data,
         getCoreRowModel: getCoreRowModel(),
     });
 
@@ -55,8 +55,8 @@ export function DataTable<TData, TValue>({
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
-                                key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
+                                key={row.id}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
@@ -71,8 +71,8 @@ export function DataTable<TData, TValue>({
                     ) : (
                         <TableRow>
                             <TableCell
-                                colSpan={columns.length}
                                 className="h-24 text-center"
+                                colSpan={columns.length}
                             >
                                 No results.
                             </TableCell>

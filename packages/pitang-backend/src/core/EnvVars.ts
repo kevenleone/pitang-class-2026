@@ -5,20 +5,20 @@ const environmentSchema = z.object({
         .string()
         .startsWith('postgres://', 'Postgres connection URL is not defined'),
 
-    JWT_SECRET: z.string(),
+    FRONTEND_URL: z.string().default('http://localhost:3000'),
 
     HTTP_PORT: z.coerce.number().default(3131),
 
+    JWT_SECRET: z.string(),
+
     NODE_ENV: z.string().default('development'),
 
-    FRONTEND_URL: z.string().default('http://localhost:3000'),
-
-    SMTP_HOST: z.string().optional(),
-    SMTP_PORT: z.coerce.number().default(2525),
-    SMTP_AUTH_USER: z.string().optional(),
-    SMTP_AUTH_PASSWORD: z.string().optional(),
-
     REDIS_URL: z.string(),
+    SMTP_AUTH_PASSWORD: z.string().optional(),
+    SMTP_AUTH_USER: z.string().optional(),
+    SMTP_HOST: z.string().optional(),
+
+    SMTP_PORT: z.coerce.number().default(2525),
 });
 
 export const environment = environmentSchema.parse(Bun.env);

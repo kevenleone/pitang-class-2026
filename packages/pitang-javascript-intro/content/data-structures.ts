@@ -8,18 +8,18 @@ const map = new Map<string, Company>();
 const set = new Set();
 
 const company: Company = {
-    name: 'Pitang',
     city: 'Recife',
+    name: 'Pitang',
 };
 
 const companies: Company[] = [
     {
-        name: 'Pitang',
         city: 'Recife',
+        name: 'Pitang',
     },
     {
-        name: 'Liferay',
         city: 'Recife',
+        name: 'Liferay',
     },
 ];
 

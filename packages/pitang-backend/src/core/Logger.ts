@@ -5,10 +5,10 @@ function createTransport(loggerName: string) {
         targets: [
             {
                 level: 'info',
-                target: 'pino/file',
                 options: { destination: `logs/${loggerName}.log` },
+                target: 'pino/file',
             },
-            { level: 'info', target: 'pino-pretty', options: {} },
+            { level: 'info', options: {}, target: 'pino-pretty' },
         ],
     });
 }

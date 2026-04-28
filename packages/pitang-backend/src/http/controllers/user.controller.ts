@@ -1,17 +1,17 @@
-import bcrypt from 'bcryptjs';
-import type { Request, Response } from 'express';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
 import z from 'zod';
 
 import { environment } from '../../core/EnvVars';
-import { prisma } from '../../core/PrismaClient';
-import { userSchema } from '../../schemas';
-import jsonwebtoken from 'jsonwebtoken';
-import {
-    registerMailQueue,
-    REGISTER_EMAIL_JOB,
-} from '../../queues/register.mail.queue';
 import { logger } from '../../core/Logger';
+import { prisma } from '../../core/PrismaClient';
+import {
+    REGISTER_EMAIL_JOB,
+    registerMailQueue,
+} from '../../queues/register.mail.queue';
+import { userSchema } from '../../schemas';
+import type { Request, Response } from 'express';
 
 export async function getUsers(request: Request, response: Response) {
     const users = await prisma.user.findMany({
@@ -22,7 +22,7 @@ export async function getUsers(request: Request, response: Response) {
 }
 
 export async function postUser(request: Request, response: Response) {
-    const { error, data } = userSchema.safeParse(request.body);
+    const { data, error } = userSchema.safeParse(request.body);
 
     if (error) {
         return response.status(400).json(z.treeifyError(error).properties);

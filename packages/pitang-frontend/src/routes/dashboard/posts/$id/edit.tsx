@@ -1,12 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
     createFileRoute,
     useLoaderData,
     useNavigate,
 } from '@tanstack/react-router';
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
     Card,
     CardContent,
@@ -14,20 +16,18 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { useForm, Controller } from 'react-hook-form';
-import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import fetcher from '@/lib/fetcher';
-import { toast } from 'sonner';
 import { postSchema, type PostSchema } from '@/zodSchemas';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 export const Route = createFileRoute('/dashboard/posts/$id/edit')({
     component: EditPost,
 });
 
 function TagsInput({
-    value,
     onChange,
+    value,
 }: {
     value: string[];
     onChange: (tags: string[]) => void;
@@ -55,14 +55,14 @@ function TagsInput({
         <div className="border-input bg-background flex min-h-[40px] flex-wrap gap-2 rounded-md border p-2">
             {value.map((tag) => (
                 <span
-                    key={tag}
                     className="bg-muted text-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-medium"
+                    key={tag}
                 >
                     {tag}
                     <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
                         className="hover:bg-muted-foreground/20 ml-1.5 inline-flex size-4 items-center justify-center rounded-full"
+                        onClick={() => removeTag(tag)}
+                        type="button"
                     >
                         ×
                     </button>
@@ -70,10 +70,10 @@ function TagsInput({
             ))}
             <input
                 className="min-w-[100px] flex-1 bg-transparent text-sm outline-none"
-                placeholder={value.length === 0 ? 'Add tags...' : ''}
-                value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
+                placeholder={value.length === 0 ? 'Add tags...' : ''}
+                value={input}
             />
         </div>
     );
@@ -121,8 +121,8 @@ function EditPost() {
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="title">Title</Label>
                             <Input
-                                placeholder="Post title"
                                 id="title"
+                                placeholder="Post title"
                                 {...register('title')}
                             />
                         </div>
@@ -130,8 +130,8 @@ function EditPost() {
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="body">Body</Label>
                             <textarea
-                                id="body"
                                 className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[120px] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="body"
                                 placeholder="Post content"
                                 {...register('body')}
                             />
@@ -140,12 +140,12 @@ function EditPost() {
                         <div className="flex flex-col gap-2">
                             <Label>Tags</Label>
                             <Controller
-                                name="tags"
                                 control={control}
+                                name="tags"
                                 render={({ field }) => (
                                     <TagsInput
-                                        value={field.value}
                                         onChange={field.onChange}
+                                        value={field.value}
                                     />
                                 )}
                             />
@@ -154,8 +154,8 @@ function EditPost() {
                         <div className="flex gap-3">
                             <Button type="submit">Save Changes</Button>
                             <Link
-                                to=".."
                                 className="border-input bg-background shadow-xs ring-foreground/10 hover:bg-muted hover:text-foreground inline-flex h-9 items-center justify-center rounded-md border px-2.5 text-sm font-medium ring-1"
+                                to=".."
                             >
                                 Cancel
                             </Link>

@@ -6,7 +6,7 @@ type PageProps = {
     subtitle?: string;
 };
 
-export default function Page({ children, title, subtitle }: PageProps) {
+export default function Page({ children, subtitle, title }: PageProps) {
     return (
         <div className="mx-4 flex flex-col gap-4">
             <div className="flex flex-col gap-1">

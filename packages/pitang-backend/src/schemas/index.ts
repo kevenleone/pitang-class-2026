@@ -1,20 +1,20 @@
-import z from 'zod';
 import crypto from 'crypto';
+import z from 'zod';
 
 export const userSchema = z.object({
+    bornDate: z.string(),
+    email: z.string(),
     firstName: z.string(),
     lastName: z.string(),
     password: z.string(),
-    email: z.string(),
-    bornDate: z.string(),
 });
 
 export const postSchema = z
     .object({
         body: z.string().max(5000),
-        title: z.string().max(255),
         slug: z.string().optional(),
         tags: z.array(z.string()).max(5),
+        title: z.string().max(255),
     })
     .transform((post) => {
         return {

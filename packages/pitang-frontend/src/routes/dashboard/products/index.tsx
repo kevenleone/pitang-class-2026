@@ -4,8 +4,7 @@ import {
     useNavigate,
 } from '@tanstack/react-router';
 import { GridIcon, ListIcon } from 'lucide-react';
-
-import { fetchProducts } from '@/lib/api';
+import useSWR from 'swr';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,7 +32,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import useSWR from 'swr';
+import { fetchProducts } from '@/lib/api';
 
 export const Route = createFileRoute('/dashboard/products/')({
     component: ProductsPage,
@@ -58,7 +57,7 @@ function ProductsPage() {
     const totalPages = Math.ceil(total / limit);
 
     const getPageNumbers = () => {
-        const pages: (number | 'ellipsis')[] = [];
+        const pages: ('ellipsis' | number)[] = [];
         const maxVisible = 5;
 
         if (totalPages <= maxVisible) {
@@ -100,26 +99,26 @@ function ProductsPage() {
                 <h1 className="text-2xl font-bold">Products</h1>
                 <div className="flex gap-2">
                     <Button
-                        variant={viewMode === 'grid' ? 'default' : 'outline'}
-                        size="icon"
                         onClick={() => {
                             navigate({
-                                to: '/dashboard/products',
                                 search: { ...search, viewMode: 'grid' },
+                                to: '/dashboard/products',
                             });
                         }}
+                        size="icon"
+                        variant={viewMode === 'grid' ? 'default' : 'outline'}
                     >
                         <GridIcon className="h-4 w-4" />
                     </Button>
                     <Button
-                        variant={viewMode === 'table' ? 'default' : 'outline'}
-                        size="icon"
                         onClick={() => {
                             navigate({
-                                to: '/dashboard/products',
                                 search: { ...search, viewMode: 'table' },
+                                to: '/dashboard/products',
                             });
                         }}
+                        size="icon"
+                        variant={viewMode === 'table' ? 'default' : 'outline'}
                     >
                         <ListIcon className="h-4 w-4" />
                     </Button>
@@ -129,12 +128,12 @@ function ProductsPage() {
             {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {products.map((product) => (
-                        <Card key={product.id} className="overflow-hidden">
+                        <Card className="overflow-hidden" key={product.id}>
                             <div className="relative aspect-square overflow-hidden">
                                 <img
-                                    src={product.thumbnail}
                                     alt={product.title}
                                     className="h-full w-full object-cover"
+                                    src={product.thumbnail}
                                 />
                             </div>
                             <CardHeader className="p-4">
@@ -165,9 +164,9 @@ function ProductsPage() {
                             </CardContent>
                             <CardFooter className="p-4 pt-0">
                                 <Button
-                                    variant="outline"
                                     className="w-full"
                                     size="sm"
+                                    variant="outline"
                                 >
                                     View Details
                                 </Button>
@@ -193,9 +192,9 @@ function ProductsPage() {
                             <TableRow key={product.id}>
                                 <TableCell>
                                     <img
-                                        src={product.thumbnail}
                                         alt={product.title}
                                         className="h-12 w-12 rounded object-cover"
+                                        src={product.thumbnail}
                                     />
                                 </TableCell>
                                 <TableCell className="font-medium">
@@ -222,16 +221,16 @@ function ProductsPage() {
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious
-                            onClick={() =>
-                                navigate({
-                                    to: '/dashboard/products',
-                                    search: { ...search, page: page - 1 },
-                                })
-                            }
                             className={
                                 page === 1
                                     ? 'pointer-events-none opacity-50'
                                     : 'cursor-pointer'
+                            }
+                            onClick={() =>
+                                navigate({
+                                    search: { ...search, page: page - 1 },
+                                    to: '/dashboard/products',
+                                })
                             }
                         />
                     </PaginationItem>
@@ -243,17 +242,17 @@ function ProductsPage() {
                         ) : (
                             <PaginationItem key={pageNum}>
                                 <PaginationLink
+                                    className="cursor-pointer"
+                                    isActive={page === pageNum}
                                     onClick={() =>
                                         navigate({
-                                            to: '/dashboard/products',
                                             search: {
                                                 ...search,
                                                 page: pageNum,
                                             },
+                                            to: '/dashboard/products',
                                         })
                                     }
-                                    isActive={page === pageNum}
-                                    className="cursor-pointer"
                                 >
                                     {pageNum}
                                 </PaginationLink>
@@ -262,16 +261,16 @@ function ProductsPage() {
                     )}
                     <PaginationItem>
                         <PaginationNext
-                            onClick={() =>
-                                navigate({
-                                    to: '/dashboard/products',
-                                    search: { ...search, page: page + 1 },
-                                })
-                            }
                             className={
                                 page === totalPages
                                     ? 'pointer-events-none opacity-50'
                                     : 'cursor-pointer'
+                            }
+                            onClick={() =>
+                                navigate({
+                                    search: { ...search, page: page + 1 },
+                                    to: '/dashboard/products',
+                                })
                             }
                         />
                     </PaginationItem>

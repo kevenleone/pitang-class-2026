@@ -1,32 +1,32 @@
 export interface LoggedUser {
-    id: number;
-    firstName: string;
-    lastName: string;
-    maidenName: string;
-    age: number;
-    gender: string;
-    email: string;
-    phone: string;
-    username: string;
-    password: string;
-    birthDate: string;
-    image: string;
-    bloodGroup: string;
-    height: number;
-    weight: number;
-    eyeColor: string;
-    hair: Hair;
-    ip: string;
     address: Address;
-    macAddress: string;
-    university: string;
+    age: number;
     bank: Bank;
+    birthDate: string;
+    bloodGroup: string;
     company: Company;
-    ein: string;
-    ssn: string;
-    userAgent: string;
     crypto: Crypto;
+    ein: string;
+    email: string;
+    eyeColor: string;
+    firstName: string;
+    gender: string;
+    hair: Hair;
+    height: number;
+    id: number;
+    image: string;
+    ip: string;
+    lastName: string;
+    macAddress: string;
+    maidenName: string;
+    password: string;
+    phone: string;
     role: string;
+    ssn: string;
+    university: string;
+    userAgent: string;
+    username: string;
+    weight: number;
 }
 
 export interface Hair {
@@ -37,11 +37,11 @@ export interface Hair {
 export interface Address {
     address: string;
     city: string;
-    state: string;
-    stateCode: string;
-    postalCode: string;
     coordinates: Coordinates;
     country: string;
+    postalCode: string;
+    state: string;
+    stateCode: string;
 }
 
 export interface Coordinates {
@@ -58,20 +58,20 @@ export interface Bank {
 }
 
 export interface Company {
+    address: Address2;
     department: string;
     name: string;
     title: string;
-    address: Address2;
 }
 
 export interface Address2 {
     address: string;
     city: string;
-    state: string;
-    stateCode: string;
-    postalCode: string;
     coordinates: Coordinates2;
     country: string;
+    postalCode: string;
+    state: string;
+    stateCode: string;
 }
 
 export interface Coordinates2 {
@@ -81,54 +81,54 @@ export interface Coordinates2 {
 
 export interface Crypto {
     coin: string;
-    wallet: string;
     network: string;
+    wallet: string;
 }
 
 export interface Review {
-    rating: number;
     comment: string;
     date: string;
-    reviewerName: string;
+    rating: number;
     reviewerEmail: string;
+    reviewerName: string;
 }
 
 export interface Dimensions {
-    width: number;
-    height: number;
     depth: number;
+    height: number;
+    width: number;
 }
 
 export interface Meta {
-    createdAt: string;
-    updatedAt: string;
     barcode: string;
+    createdAt: string;
     qrCode: string;
+    updatedAt: string;
 }
 
 export interface Product {
-    id: number;
-    title: string;
-    description: string;
+    availabilityStatus: 'In Stock' | 'Low Stock' | 'Out of Stock';
+    brand: string;
     category: string;
-    price: number;
+    description: string;
+    dimensions: Dimensions;
     discountPercentage: number;
+    id: number;
+    images: string[];
+    meta: Meta;
+    minimumOrderQuantity: number;
+    price: number;
     rating: number;
+    returnPolicy: string;
+    reviews: Review[];
+    shippingInformation: string;
+    sku: string;
     stock: number;
     tags: string[];
-    brand: string;
-    sku: string;
-    weight: number;
-    dimensions: Dimensions;
-    warrantyInformation: string;
-    shippingInformation: string;
-    availabilityStatus: 'In Stock' | 'Low Stock' | 'Out of Stock';
-    reviews: Review[];
-    returnPolicy: string;
-    minimumOrderQuantity: number;
-    meta: Meta;
-    images: string[];
     thumbnail: string;
+    title: string;
+    warrantyInformation: string;
+    weight: number;
 }
 
 // export interface ProductsResponse {
@@ -139,24 +139,24 @@ export interface Product {
 // }
 
 export interface Post {
-    id: number;
-    title: string;
     body: string;
-    tags: string[];
+    id: number;
     reactions: Reactions;
-    views: number;
+    tags: string[];
+    title: string;
     userId: number;
+    views: number;
 }
 
 export interface Reactions {
-    likes: number;
     dislikes: number;
+    likes: number;
 }
 
 export type ApiResponse<T, K extends string> = {
+    [key in K]: T[];
+} & {
     total: number;
     skip: number;
     limit: number;
-} & {
-    [key in K]: T[];
 };

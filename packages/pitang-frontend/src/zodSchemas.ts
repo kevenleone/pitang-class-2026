@@ -10,6 +10,7 @@ const passwordSchema = z
     });
 
 export const loginSchema = z.object({
+    password: z.string(),
     username: z
         .string()
         .min(6, { message: 'Username must be at least 6 char longs' })
@@ -18,16 +19,15 @@ export const loginSchema = z.object({
             /^[a-z0-9]{6,20}$/,
             'Username must not contain special characters or uppercase letters',
         ),
-    password: z.string(),
 });
 
 export const registerSchema = loginSchema
     .extend({
-        password: passwordSchema,
         confirmPassword: passwordSchema,
         email: z.email().refine((email) => !email.includes('@gmail.com'), {
             error: 'Gmail is banned',
         }),
+        password: passwordSchema,
     })
     .superRefine(({ confirmPassword, password }, ctx) => {
         if (confirmPassword !== password) {
@@ -40,9 +40,9 @@ export const registerSchema = loginSchema
     });
 
 export const postSchema = z.object({
-    title: z.string().min(3),
     body: z.string().min(3).max(1000),
     tags: z.array(z.string()).min(1, 'At least one tag is required'),
+    title: z.string().min(3),
 });
 
 export type LoginSchema = z.infer<typeof loginSchema>;

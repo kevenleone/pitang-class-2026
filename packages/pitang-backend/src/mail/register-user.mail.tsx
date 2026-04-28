@@ -1,16 +1,15 @@
 import { render } from 'react-email';
-import type { User } from '../generated/prisma/client';
-
+import { loggerWorker } from '../core/Logger';
 import { mailProvider } from './mail.provider';
 import { RegisterUserTemplate } from './templates/RegisterUserTemplate';
-import { loggerWorker } from '../core/Logger';
+import type { User } from '../generated/prisma/client';
 
 export async function registerUserEmail(user: User) {
     const info = await mailProvider.sendMail({
         from: '"Pitang Team" <welcome@pitang.com>',
-        to: user.email,
-        subject: 'Welcome to Pitang Onboarding',
         html: await render(<RegisterUserTemplate {...user} />),
+        subject: 'Welcome to Pitang Onboarding',
+        to: user.email,
     });
 
     loggerWorker.info('Message sent: ' + info.messageId);

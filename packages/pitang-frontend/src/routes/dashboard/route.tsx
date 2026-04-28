@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
+import { Fragment } from 'react/jsx-runtime';
 import { AppSidebar } from '@/components/app-sidebar';
 import {
     Breadcrumb,
@@ -13,7 +14,6 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Fragment } from 'react/jsx-runtime';
 
 export const Route = createFileRoute('/dashboard')({
     component: RouteComponent,
@@ -32,8 +32,8 @@ function RouteComponent() {
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
-                            orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
+                            orientation="vertical"
                         />
 
                         <Breadcrumb>

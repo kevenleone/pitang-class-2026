@@ -1,10 +1,9 @@
-import * as React from 'react';
-
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
     MoreHorizontalIcon,
 } from 'lucide-react';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -13,10 +12,10 @@ const Pagination = React.forwardRef<
     React.ComponentPropsWithoutRef<'nav'>
 >(({ className, ...props }, ref) => (
     <nav
-        ref={ref}
-        role="navigation"
         aria-label="pagination"
         className={cn('flex w-full justify-center', className)}
+        ref={ref}
+        role="navigation"
         {...props}
     />
 ));
@@ -27,8 +26,8 @@ const PaginationContent = React.forwardRef<
     React.ComponentPropsWithoutRef<'ul'>
 >(({ className, ...props }, ref) => (
     <ul
-        ref={ref}
         className={cn('flex flex-row items-center gap-1', className)}
+        ref={ref}
         {...props}
     />
 ));
@@ -38,13 +37,13 @@ const PaginationItem = React.forwardRef<
     HTMLLIElement,
     React.ComponentPropsWithoutRef<'li'>
 >(({ className, ...props }, ref) => (
-    <li ref={ref} className={cn('', className)} {...props} />
+    <li className={cn('', className)} ref={ref} {...props} />
 ));
 PaginationItem.displayName = 'PaginationItem';
 
-type PaginationLinkProps = {
+type PaginationLinkProps = React.ComponentPropsWithoutRef<'a'> & {
     isActive?: boolean;
-} & React.ComponentPropsWithoutRef<'a'>;
+};
 
 const PaginationLink = ({
     className,

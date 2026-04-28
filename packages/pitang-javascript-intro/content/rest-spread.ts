@@ -9,8 +9,8 @@ const user = {
 
 const user2 = {
     ...user.obj,
-    name: 'Keven',
     city: 'Recife',
+    name: 'Keven',
 };
 
 const { name = 'Keven', ...userxxx } = user2;

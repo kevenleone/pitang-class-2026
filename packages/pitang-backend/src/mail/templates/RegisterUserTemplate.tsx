@@ -1,19 +1,19 @@
 import {
-    Html,
     Button,
-    Heading,
-    Text,
-    Section,
     Container,
+    Heading,
+    Html,
     Link,
+    Section,
+    Text,
 } from 'react-email';
-import type { User } from '../../generated/prisma/client';
 import { environment } from '../../core/EnvVars';
+import type { User } from '../../generated/prisma/client';
 
 const brand = {
-    primary: '#333333',
     background: '#f8f9fa',
     border: '#e9ecef',
+    primary: '#333333',
     textLight: '#666666',
 };
 
@@ -32,8 +32,8 @@ export function RegisterUserTemplate(props: RegisterUserTemplateProps) {
                         background: '#ffffff',
                         border: `1px solid ${brand.border}`,
                         borderRadius: '12px',
-                        padding: '40px',
                         maxWidth: '500px',
+                        padding: '40px',
                     }}
                 >
                     <Heading
@@ -61,11 +61,11 @@ export function RegisterUserTemplate(props: RegisterUserTemplateProps) {
                         href={activationLink}
                         style={{
                             background: brand.primary,
-                            color: '#fff',
-                            padding: '14px 28px',
                             borderRadius: '8px',
+                            color: '#fff',
                             fontWeight: '600',
                             marginTop: '8px',
+                            padding: '14px 28px',
                         }}
                     >
                         Activate my account

@@ -1,6 +1,6 @@
-import type { NextFunction, Request, Response } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { environment } from '../../core/EnvVars';
+import type { NextFunction, Request, Response } from 'express';
 
 const allowedPaths = {
     GET: ['/', '/api/post/*', '/admin/queues/*', '/admin/queues'],

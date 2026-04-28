@@ -1,4 +1,4 @@
-import { createContext, useReducer, type PropsWithChildren } from 'react';
+import { createContext, type PropsWithChildren, useReducer } from 'react';
 import useSWR from 'swr';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -12,8 +12,8 @@ type AppState = {
 };
 
 type AppAction =
-    | { type: 'SET_THEME'; payload: Theme }
-    | { type: 'SET_LOGGED_USER'; payload: LoggedUser | null };
+    | { type: 'SET_LOGGED_USER'; payload: LoggedUser | null }
+    | { type: 'SET_THEME'; payload: Theme };
 
 const initialState: AppState = {
     loggedUser: null,
@@ -43,7 +43,7 @@ export default function AppContextProvider({ children }: PropsWithChildren) {
 
     const { data } = useSWR('/auth/me', getAuthenticatedUser, {
         onSuccess: (data) =>
-            dispatch({ type: 'SET_LOGGED_USER', payload: data }),
+            dispatch({ payload: data, type: 'SET_LOGGED_USER' }),
     });
 
     return (

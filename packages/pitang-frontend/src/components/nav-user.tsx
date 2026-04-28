@@ -1,3 +1,11 @@
+import {
+    BadgeCheckIcon,
+    BellIcon,
+    ChevronsUpDownIcon,
+    CreditCardIcon,
+    LogOutIcon,
+    SparklesIcon,
+} from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -14,14 +22,6 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import {
-    ChevronsUpDownIcon,
-    SparklesIcon,
-    BadgeCheckIcon,
-    CreditCardIcon,
-    BellIcon,
-    LogOutIcon,
-} from 'lucide-react';
 
 type NavUserProps = {
     handleLogout: () => void;
@@ -32,7 +32,7 @@ type NavUserProps = {
     };
 };
 
-export function NavUser({ user, handleLogout }: NavUserProps) {
+export function NavUser({ handleLogout, user }: NavUserProps) {
     const { isMobile } = useSidebar();
 
     return (
@@ -42,13 +42,13 @@ export function NavUser({ user, handleLogout }: NavUserProps) {
                     <DropdownMenuTrigger
                         render={
                             <SidebarMenuButton
-                                size="lg"
                                 className="aria-expanded:bg-muted"
+                                size="lg"
                             />
                         }
                     >
                         <Avatar>
-                            <AvatarImage src={user.avatar} alt={user.name} />
+                            <AvatarImage alt={user.name} src={user.avatar} />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <div className="grid flex-1 text-left text-sm leading-tight">
@@ -62,9 +62,9 @@ export function NavUser({ user, handleLogout }: NavUserProps) {
                         <ChevronsUpDownIcon className="ml-auto size-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
+                        align="end"
                         className="min-w-56 rounded-lg"
                         side={isMobile ? 'bottom' : 'right'}
-                        align="end"
                         sideOffset={4}
                     >
                         <DropdownMenuGroup>
@@ -72,8 +72,8 @@ export function NavUser({ user, handleLogout }: NavUserProps) {
                                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                     <Avatar>
                                         <AvatarImage
-                                            src={user.avatar}
                                             alt={user.name}
+                                            src={user.avatar}
                                         />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>

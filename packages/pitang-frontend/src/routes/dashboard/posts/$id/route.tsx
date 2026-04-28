@@ -1,6 +1,6 @@
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 import fetcher from '@/lib/fetcher';
 import type { Post } from '@/types';
-import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboard/posts/$id')({
     component: RouteComponent,

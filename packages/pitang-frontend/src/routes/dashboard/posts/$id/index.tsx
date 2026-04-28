@@ -20,8 +20,8 @@ function RouteComponent() {
     return (
         <div className="mx-auto max-w-3xl p-6">
             <Link
-                to="/dashboard/posts"
                 className="text-muted-foreground hover:text-foreground mb-4 inline-flex items-center gap-1.5 text-sm"
+                to="/dashboard/posts"
             >
                 ← Back to posts
             </Link>
@@ -33,8 +33,8 @@ function RouteComponent() {
                         <Button
                             render={
                                 <Link
-                                    to="/dashboard/posts/$id/edit"
                                     params={{ id: post.id.toString() }}
+                                    to="/dashboard/posts/$id/edit"
                                 >
                                     Edit
                                 </Link>
@@ -51,8 +51,8 @@ function RouteComponent() {
                     <div className="flex flex-wrap gap-2">
                         {post.tags?.map((tag: string) => (
                             <span
-                                key={tag}
                                 className="bg-muted text-muted-foreground inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                key={tag}
                             >
                                 {tag}
                             </span>

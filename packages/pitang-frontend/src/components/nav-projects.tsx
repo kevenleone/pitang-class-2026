@@ -1,3 +1,10 @@
+import { Link } from '@tanstack/react-router';
+import {
+    FolderIcon,
+    MoreHorizontalIcon,
+    ShareIcon,
+    Trash2Icon,
+} from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,13 +20,6 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import {
-    MoreHorizontalIcon,
-    FolderIcon,
-    ShareIcon,
-    Trash2Icon,
-} from 'lucide-react';
-import { Link } from '@tanstack/react-router';
 
 export function NavProjects({
     projects,
@@ -45,8 +45,8 @@ export function NavProjects({
                             <DropdownMenuTrigger
                                 render={
                                     <SidebarMenuAction
-                                        showOnHover
                                         className="aria-expanded:bg-muted"
+                                        showOnHover
                                     />
                                 }
                             >
@@ -54,9 +54,9 @@ export function NavProjects({
                                 <span className="sr-only">More</span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
+                                align={isMobile ? 'end' : 'start'}
                                 className="w-48"
                                 side={isMobile ? 'bottom' : 'right'}
-                                align={isMobile ? 'end' : 'start'}
                             >
                                 <DropdownMenuItem>
                                     <FolderIcon className="text-muted-foreground" />
