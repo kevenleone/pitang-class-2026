@@ -50,7 +50,7 @@ export default tseslint.config(
                         'style',
                         'unknown',
                     ],
-                    newlinesBetween: 'ignore',
+                    newlinesBetween: 1,
                     internalPattern: ['^@/'],
                 },
             ],
