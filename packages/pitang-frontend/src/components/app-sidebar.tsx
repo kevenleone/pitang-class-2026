@@ -6,6 +6,7 @@ import {
     TerminalIcon,
 } from 'lucide-react';
 import { useContext } from 'react';
+
 import { NavProjects } from '@/components/nav-projects';
 import { NavSecondary } from '@/components/nav-secondary';
 import { NavUser } from '@/components/nav-user';

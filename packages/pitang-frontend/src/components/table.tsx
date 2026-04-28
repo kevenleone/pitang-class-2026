@@ -6,6 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+
 import type { ReactNode } from 'react';
 
 type TableProps = {

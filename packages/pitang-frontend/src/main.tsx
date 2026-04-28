@@ -1,7 +1,9 @@
 import './index.css';
+
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
 import { SWRConfig } from 'swr';
+
 import { Toaster } from '@/components/ui/sonner';
 
 import AppContextProvider from './context/AppContext';

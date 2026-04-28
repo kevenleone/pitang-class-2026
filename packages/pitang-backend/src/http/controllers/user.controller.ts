@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import z from 'zod';
@@ -11,6 +12,7 @@ import {
     registerMailQueue,
 } from '../../queues/register.mail.queue';
 import { userSchema } from '../../schemas';
+
 import type { Request, Response } from 'express';
 
 export async function getUsers(request: Request, response: Response) {

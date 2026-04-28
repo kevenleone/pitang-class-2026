@@ -1,5 +1,6 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router';
 import { Link } from '@tanstack/react-router';
+
 import { Button } from '@/components/ui/button';
 import {
     Card,

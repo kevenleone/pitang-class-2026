@@ -1,6 +1,8 @@
 import z from 'zod';
+
 import { prisma } from '../../core/PrismaClient';
 import { paginationQuery, postSchema } from '../../schemas';
+
 import type { Request, Response } from 'express';
 
 export async function getPost(request: Request, response: Response) {

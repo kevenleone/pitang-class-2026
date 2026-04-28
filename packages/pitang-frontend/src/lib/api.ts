@@ -1,4 +1,5 @@
 import fetcher from './fetcher';
+
 import type { Product, ProductsResponse } from '@/types';
 
 export async function fetchProducts(

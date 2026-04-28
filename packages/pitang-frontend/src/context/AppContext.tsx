@@ -2,6 +2,7 @@ import { createContext, type PropsWithChildren, useReducer } from 'react';
 import useSWR from 'swr';
 
 import { useAuth } from '@/hooks/use-auth';
+
 import type { LoggedUser } from '@/types';
 
 type Theme = 'dark' | 'light';

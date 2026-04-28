@@ -1,4 +1,5 @@
 import { Queue } from 'bullmq';
+
 import { environment } from '../core/EnvVars';
 
 export const connection = {

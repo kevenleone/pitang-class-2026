@@ -7,7 +7,9 @@ import {
     Section,
     Text,
 } from 'react-email';
+
 import { environment } from '../../core/EnvVars';
+
 import type { User } from '../../generated/prisma/client';
 
 const brand = {

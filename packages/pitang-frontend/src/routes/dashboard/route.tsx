@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
+
 import { AppSidebar } from '@/components/app-sidebar';
 import {
     Breadcrumb,
