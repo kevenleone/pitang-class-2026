@@ -6,9 +6,9 @@
     "scripts": {
         "dev": "bun --filter '*' dev",
         "build": "bun --filter '*' build",
-        "lint": "eslint .",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "lint": "eslint ."
     },
     "workspaces": [
         "packages/*"
