@@ -23,6 +23,17 @@ services:
         volumes:
             - redis_data:/data
 
+    postgres-test:
+        image: postgres:16-alpine
+        container_name: pitang-postgres-test
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: pitang_test
+        ports:
+            - '5433:5432'
+
 volumes:
     postgres_data:
     redis_data:

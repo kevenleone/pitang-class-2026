@@ -47,7 +47,7 @@ export function authMiddleware(
         request.loggedUser = jsonwebtoken.verify(token, environment.JWT_SECRET);
 
         next();
-    } catch (error) {
+    } catch {
         response.status(401).json({ message: 'Not authorized' });
     }
 }
