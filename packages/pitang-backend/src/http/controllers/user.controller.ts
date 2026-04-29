@@ -47,7 +47,7 @@ export async function postUser(request: Request, response: Response) {
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
     user = await prisma.user.create({
-        data: { ...data, verificationToken },
+        data: { ...data, bornDate: new Date(data.bornDate), verificationToken },
     });
 
     await registerMailQueue.add(REGISTER_EMAIL_JOB, user, {
@@ -56,6 +56,8 @@ export async function postUser(request: Request, response: Response) {
     });
 
     logger.info(user, 'User registered');
+
+    delete (user as any).password;
 
     response.status(201).json(user);
 }

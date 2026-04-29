@@ -1,12 +1,13 @@
 import { environment } from '../../core/EnvVars';
 import { logger } from '../../core/Logger';
 
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 export function errorFallbackMiddleware(
     error: Error,
     request: Request,
     response: Response,
+    _next: NextFunction,
 ) {
     logger.error(error);
 
