@@ -16,7 +16,7 @@ const userRouter = express.Router();
 userRouter.post('/login', login);
 userRouter.get('/users', roleRestrictedMiddleware([Role.ADMIN]), getUsers);
 userRouter.get('/users/:id', roleRestrictedMiddleware([Role.ADMIN]), getUser);
-userRouter.post('/users', roleRestrictedMiddleware([Role.ADMIN]), postUser);
+userRouter.post('/users', postUser);
 userRouter.patch(
     '/users/:id',
     roleRestrictedMiddleware([Role.ADMIN, Role.COLLABORATOR, Role.USER]),
