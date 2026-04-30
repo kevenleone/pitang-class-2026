@@ -7,15 +7,17 @@ import z from 'zod';
 import { environment } from '../../core/EnvVars';
 import { logger } from '../../core/Logger';
 import { prisma } from '../../core/PrismaClient';
+import { Role } from '../../generated/prisma/enums';
 import {
     REGISTER_EMAIL_JOB,
     registerMailQueue,
 } from '../../queues/register.mail.queue';
 import { userSchema } from '../../schemas';
+import { getLoggedUser } from '../../util/get-logged-user';
 
 import type { Request, Response } from 'express';
 
-export async function getUsers(request: Request, response: Response) {
+export async function getUsers(_request: Request, response: Response) {
     const users = await prisma.user.findMany({
         omit: { password: true },
     });
@@ -78,13 +80,26 @@ export async function getUser(request: Request, response: Response) {
 }
 
 export async function patchUser(request: Request, response: Response) {
+    const loggedUser = getLoggedUser(request);
+
     const {
         body,
         params: { id },
     } = request;
 
+    if (loggedUser.role === Role.USER) {
+        if (loggedUser.id !== id) {
+            return response
+                .status(400)
+                .json({ message: 'You only edit yourself.' });
+        }
+
+        delete body.role;
+    }
+
     const user = await prisma.user.update({
         data: body,
+        omit: { password: true, verificationToken: true },
         where: { id: id as string },
     });
 

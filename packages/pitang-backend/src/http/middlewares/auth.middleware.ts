@@ -6,7 +6,7 @@ import type { NextFunction, Request, Response } from 'express';
 
 const allowedPaths = {
     GET: ['/', '/api/post/*', '/admin/queues/*', '/admin/queues'],
-    POST: ['/api/login', '/api/users'],
+    POST: ['/api/login'],
     PUT: ['/admin/queues/*', '/admin/queues'],
 } as const;
 

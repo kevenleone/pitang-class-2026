@@ -12,12 +12,19 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+    ADMIN
+    COLLABORATOR
+    USER
+}
+
 model User {
   id String @id @default(uuid())
 
   email     String   @unique
   firstName String
   lastName  String
+  role      Role    @default(USER)
   password  String
   bornDate  DateTime
   verificationToken String?
