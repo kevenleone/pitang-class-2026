@@ -14,14 +14,13 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { registerSchema, type RegisterSchema } from '@/zodSchemas';
 
-function sleep(timer: number) {
-    return new Promise((resolve) => setTimeout(() => resolve(null), timer));
-}
-
 export function SignupForm({
     className,
+    handleRegister = () => null,
     ...props
-}: React.ComponentProps<'form'>) {
+}: React.ComponentProps<'form'> & {
+    handleRegister?: (data: RegisterSchema) => void;
+}) {
     const { formState, handleSubmit, register } = useForm<RegisterSchema>({
         defaultValues: {
             confirmPassword: '',
@@ -32,12 +31,6 @@ export function SignupForm({
         mode: 'onBlur',
         resolver: zodResolver(registerSchema),
     });
-
-    async function handleRegister(data: RegisterSchema) {
-        await sleep(3000);
-
-        console.log('Registered User ', data);
-    }
 
     return (
         <form
@@ -124,7 +117,11 @@ export function SignupForm({
                 </Field>
                 <FieldSeparator>Or continue with</FieldSeparator>
                 <Field>
-                    <Button type="button" variant="outline">
+                    <Button
+                        id="sign-up-with-github"
+                        type="button"
+                        variant="outline"
+                    >
                         <svg
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"

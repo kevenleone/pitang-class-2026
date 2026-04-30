@@ -60,7 +60,9 @@ describe('User Controller (HTTP)', () => {
 
     describe('GET /api/users', () => {
         it('lists all users without passwords', async () => {
-            const { token } = await createTestUser({ email: 'user1@example.com' });
+            const { token } = await createTestUser({
+                email: 'user1@example.com',
+            });
             await createTestUser({ email: 'user2@example.com' });
 
             const response = await request(app)

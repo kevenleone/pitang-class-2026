@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test';
 
-import type { NextFunction, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 mock.module('../../core/Logger', () => ({
     logger: { error: mock(() => {}) },
