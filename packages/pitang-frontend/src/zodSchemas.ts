@@ -10,23 +10,17 @@ const passwordSchema = z
     });
 
 export const loginSchema = z.object({
+    email: z.string().email(),
     password: z.string(),
-    username: z
-        .string()
-        .min(6, { message: 'Username must be at least 6 char longs' })
-        .max(20, { message: 'Username cannot exceed 20 characters' })
-        .regex(
-            /^[a-z0-9]{6,20}$/,
-            'Username must not contain special characters or uppercase letters',
-        ),
 });
 
-export const registerSchema = loginSchema
-    .extend({
+export const registerSchema = z
+    .object({
+        bornDate: z.string().min(1, 'Born date is required'),
         confirmPassword: passwordSchema,
-        email: z.email().refine((email) => !email.includes('@gmail.com'), {
-            error: 'Gmail is banned',
-        }),
+        email: z.string().email(),
+        firstName: z.string().min(1, 'First name is required'),
+        lastName: z.string().min(1, 'Last name is required'),
         password: passwordSchema,
     })
     .superRefine(({ confirmPassword, password }, ctx) => {

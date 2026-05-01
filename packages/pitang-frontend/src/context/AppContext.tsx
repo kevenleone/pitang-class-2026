@@ -42,7 +42,7 @@ export default function AppContextProvider({ children }: PropsWithChildren) {
     const [state, dispatch] = useReducer(appReducer, initialState);
     const { getAuthenticatedUser } = useAuth();
 
-    const { data } = useSWR('/auth/me', getAuthenticatedUser, {
+    const { data } = useSWR('/api/me', getAuthenticatedUser, {
         onSuccess: (data) =>
             dispatch({ payload: data, type: 'SET_LOGGED_USER' }),
     });

@@ -17,6 +17,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ProductIdRouteImport } from './routes/product/$id'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as PostsIdIndexRouteImport } from './routes/posts/$id/index'
 import { Route as DashboardProductsIndexRouteImport } from './routes/dashboard/products/index'
 import { Route as DashboardPostsIndexRouteImport } from './routes/dashboard/posts/index'
 import { Route as DashboardPostsNewRouteImport } from './routes/dashboard/posts/new'
@@ -63,6 +64,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const PostsIdIndexRoute = PostsIdIndexRouteImport.update({
+  id: '/posts/$id/',
+  path: '/posts/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardProductsIndexRoute = DashboardProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/posts/new': typeof DashboardPostsNewRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
+  '/posts/$id/': typeof PostsIdIndexRoute
   '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
   '/dashboard/posts/$id/': typeof DashboardPostsIdIndexRoute
 }
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/dashboard/posts/new': typeof DashboardPostsNewRoute
   '/dashboard/posts': typeof DashboardPostsIndexRoute
   '/dashboard/products': typeof DashboardProductsIndexRoute
+  '/posts/$id': typeof PostsIdIndexRoute
   '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
   '/dashboard/posts/$id': typeof DashboardPostsIdIndexRoute
 }
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/dashboard/posts/new': typeof DashboardPostsNewRoute
   '/dashboard/posts/': typeof DashboardPostsIndexRoute
   '/dashboard/products/': typeof DashboardProductsIndexRoute
+  '/posts/$id/': typeof PostsIdIndexRoute
   '/dashboard/posts/$id/edit': typeof DashboardPostsIdEditRoute
   '/dashboard/posts/$id/': typeof DashboardPostsIdIndexRoute
 }
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/new'
     | '/dashboard/posts/'
     | '/dashboard/products/'
+    | '/posts/$id/'
     | '/dashboard/posts/$id/edit'
     | '/dashboard/posts/$id/'
   fileRoutesByTo: FileRoutesByTo
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/new'
     | '/dashboard/posts'
     | '/dashboard/products'
+    | '/posts/$id'
     | '/dashboard/posts/$id/edit'
     | '/dashboard/posts/$id'
   id:
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/dashboard/posts/new'
     | '/dashboard/posts/'
     | '/dashboard/products/'
+    | '/posts/$id/'
     | '/dashboard/posts/$id/edit'
     | '/dashboard/posts/$id/'
   fileRoutesById: FileRoutesById
@@ -192,6 +204,7 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ProductIdRoute: typeof ProductIdRoute
+  PostsIdIndexRoute: typeof PostsIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/posts/$id/': {
+      id: '/posts/$id/'
+      path: '/posts/$id'
+      fullPath: '/posts/$id/'
+      preLoaderRoute: typeof PostsIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/products/': {
       id: '/dashboard/products/'
@@ -352,6 +372,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ProductIdRoute: ProductIdRoute,
+  PostsIdIndexRoute: PostsIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

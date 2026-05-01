@@ -1,24 +1,33 @@
 import FetcherError from './FetcherError';
 
-const HOST = 'https://dummyjson.com';
+const HOST = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+function getToken() {
+    return document.cookie
+        .split('; ')
+        .find((c) => c.startsWith('@pitang/accessToken='))
+        ?.split('=')[1];
+}
 
 function changeResource(resource: RequestInfo) {
     if (resource.toString().startsWith('http')) {
         return resource;
     }
 
-    return `${HOST}/${resource}`;
+    return `${HOST}${resource}`;
 }
 
 const fetcher = async <T = any>(
     resource: RequestInfo,
     options?: RequestInit,
 ): Promise<T> => {
-    // await sleep();
+    const token = getToken();
+
     const response = await fetch(changeResource(resource), {
         ...options,
         headers: {
             'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
             ...options?.headers,
         },
     });

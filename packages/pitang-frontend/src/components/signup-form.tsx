@@ -11,31 +11,37 @@ import {
     FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { registerSchema, type RegisterSchema } from '@/zodSchemas';
 
 export function SignupForm({
     className,
-    handleRegister = () => null,
     ...props
-}: React.ComponentProps<'form'> & {
-    handleRegister?: (data: RegisterSchema) => void;
-}) {
+}: React.ComponentProps<'form'>) {
+    const { handleRegister } = useAuth();
+
     const { formState, handleSubmit, register } = useForm<RegisterSchema>({
         defaultValues: {
+            bornDate: '',
             confirmPassword: '',
             email: '',
+            firstName: '',
+            lastName: '',
             password: '',
-            username: '',
         },
         mode: 'onBlur',
         resolver: zodResolver(registerSchema),
     });
 
+    async function onSubmit(data: RegisterSchema) {
+        await handleRegister(data);
+    }
+
     return (
         <form
             className={cn('flex flex-col gap-6', className)}
-            onSubmit={handleSubmit(handleRegister)}
+            onSubmit={handleSubmit(onSubmit)}
             {...props}
         >
             <FieldGroup>
@@ -46,14 +52,32 @@ export function SignupForm({
                     </p>
                 </div>
 
-                <Field data-invalid={!!formState.errors.username}>
-                    <FieldLabel htmlFor="username">User Name</FieldLabel>
+                <Field data-invalid={!!formState.errors.firstName}>
+                    <FieldLabel htmlFor="firstName">First Name</FieldLabel>
                     <Input
-                        aria-invalid={!!formState.errors.username}
-                        id="username"
-                        placeholder="johndoe"
-                        {...register('username')}
+                        aria-invalid={!!formState.errors.firstName}
+                        id="firstName"
+                        {...register('firstName')}
                     />
+                    {formState.errors.firstName?.message && (
+                        <FieldDescription>
+                            {formState.errors.firstName?.message}
+                        </FieldDescription>
+                    )}
+                </Field>
+
+                <Field data-invalid={!!formState.errors.lastName}>
+                    <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                    <Input
+                        aria-invalid={!!formState.errors.lastName}
+                        id="lastName"
+                        {...register('lastName')}
+                    />
+                    {formState.errors.lastName?.message && (
+                        <FieldDescription>
+                            {formState.errors.lastName?.message}
+                        </FieldDescription>
+                    )}
                 </Field>
 
                 <Field data-invalid={!!formState.errors.email}>
@@ -62,12 +86,29 @@ export function SignupForm({
                         aria-invalid={!!formState.errors.email}
                         id="email"
                         placeholder="janedoe@example.com"
+                        type="email"
                         {...register('email')}
                     />
 
                     {formState.errors.email?.message && (
                         <FieldDescription>
                             {formState.errors.email?.message}
+                        </FieldDescription>
+                    )}
+                </Field>
+
+                <Field data-invalid={!!formState.errors.bornDate}>
+                    <FieldLabel htmlFor="bornDate">Born Date</FieldLabel>
+                    <Input
+                        aria-invalid={!!formState.errors.bornDate}
+                        id="bornDate"
+                        type="date"
+                        {...register('bornDate')}
+                    />
+
+                    {formState.errors.bornDate?.message && (
+                        <FieldDescription>
+                            {formState.errors.bornDate?.message}
                         </FieldDescription>
                     )}
                 </Field>

@@ -12,9 +12,18 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import fetcher from '@/lib/fetcher';
 
-import type { ApiResponse, Post } from '@/types';
+import type { Post } from '@/types';
 import type { ColumnDef } from '@tanstack/react-table';
+
+interface PostsResponse {
+    items: Post[];
+    lastPage: boolean;
+    page: number;
+    pageSize: number;
+    totalCount: number;
+}
 
 export const Route = createFileRoute('/dashboard/posts/')({
     component: RouteComponent,
@@ -22,18 +31,18 @@ export const Route = createFileRoute('/dashboard/posts/')({
 
 function RouteComponent() {
     const navigate = useNavigate();
-    const { data } = useSWR<ApiResponse<Post, 'posts'>>('/posts');
+    const { data, mutate } = useSWR<PostsResponse>('/api/post?page=1&pageSize=20');
 
     const columns: ColumnDef<Post>[] = [
         {
             accessorKey: 'id',
-            cell: ({ row }) => <b>{row.getValue('id')}</b>,
+            cell: ({ row }) => <b>#{row.getValue('id')}</b>,
             header: 'ID',
         },
         { accessorKey: 'title', header: 'Title' },
         {
             accessorKey: 'body',
-            cell: ({ row }) => row.getValue('body')?.substring(0, 40) + '...',
+            cell: ({ row }) => (row.getValue('body') as string).substring(0, 40) + '...',
             header: 'Body',
         },
         { accessorKey: 'views', header: 'Views' },
@@ -51,7 +60,7 @@ function RouteComponent() {
                             <DropdownMenuItem
                                 onClick={() =>
                                     navigate({
-                                        to: `/dashboard/posts/${row.getValue('id')}`,
+                                        to: `/dashboard/posts/${row.original.slug}`,
                                     })
                                 }
                             >
@@ -61,7 +70,7 @@ function RouteComponent() {
                             <DropdownMenuItem
                                 onClick={() =>
                                     navigate({
-                                        to: `/dashboard/posts/${row.getValue('id')}/edit`,
+                                        to: `/dashboard/posts/${row.original.slug}/edit`,
                                     })
                                 }
                             >
@@ -69,7 +78,7 @@ function RouteComponent() {
                             </DropdownMenuItem>
 
                             <DropdownMenuItem
-                                onClick={() => {
+                                onClick={async () => {
                                     if (
                                         !confirm(
                                             'Are you sure you want to delete this post?',
@@ -78,9 +87,13 @@ function RouteComponent() {
                                         return;
                                     }
 
+                                    await fetcher.delete(`/api/post/${row.original.slug}`);
+
                                     toast.info(
-                                        `Post "${row.getValue('title')}" is deleted`,
+                                        `Post "${row.getValue('title')}" deleted`,
                                     );
+
+                                    mutate();
                                 }}
                             >
                                 Delete
@@ -93,7 +106,7 @@ function RouteComponent() {
         },
     ];
 
-    const posts = data?.posts ?? [];
+    const posts = data?.items ?? [];
 
     return (
         <Page subtitle="Manage your Blog Posts" title="Posts">
@@ -101,11 +114,3 @@ function RouteComponent() {
         </Page>
     );
 }
-
-//  <Page title="Posts" subtitle="Manage your Blog Posts">
-//       <Table
-//         rows={posts}
-//         columns=}
-//         caption="A list of your recent posts."
-//       />
-//     </Page>

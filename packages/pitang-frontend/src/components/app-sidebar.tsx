@@ -48,9 +48,16 @@ const data = {
         },
     ],
 };
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { handleLogout } = useAuth();
     const [{ loggedUser }] = useContext(AppContext);
+
+    const userName = loggedUser
+        ? `${loggedUser.firstName} ${loggedUser.lastName}`
+        : '';
+    const userEmail = loggedUser?.email || '';
+    const userRole = loggedUser?.role || '';
 
     return (
         <Sidebar variant="inset" {...props}>
@@ -63,10 +70,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {loggedUser?.company?.name}
+                                    {userName || 'Pitang Class'}
                                 </span>
-                                <span className="truncate text-xs">
-                                    {loggedUser?.company?.title}
+                                <span className="text-muted-foreground truncate text-xs">
+                                    {userRole || userEmail}
                                 </span>
                             </div>
                         </SidebarMenuButton>
@@ -81,9 +88,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavUser
                     handleLogout={handleLogout}
                     user={{
-                        avatar: loggedUser?.image || '',
-                        email: loggedUser?.email || '',
-                        name: `${loggedUser?.firstName} ${loggedUser?.lastName}`,
+                        avatar: '',
+                        email: userEmail,
+                        name: userName,
+                        role: userRole,
                     }}
                 />
             </SidebarFooter>

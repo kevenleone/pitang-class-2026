@@ -95,11 +95,11 @@ function EditPost() {
 
     async function onSubmit(data: PostSchema) {
         try {
-            await fetcher.patch(`/posts/${post.id}`, data);
+            await fetcher.patch(`/api/post/${post.slug}`, data);
 
             toast.success('Post updated successfully');
 
-            navigate({ to: `/dashboard/posts/${post.id}` });
+            navigate({ to: `/dashboard/posts/${post.slug}` });
         } catch (error) {
             toast.error((error as Error).message);
         }

@@ -30,6 +30,7 @@ type NavUserProps = {
         name: string;
         email: string;
         avatar: string;
+        role?: string;
     };
 };
 
@@ -85,6 +86,11 @@ export function NavUser({ handleLogout, user }: NavUserProps) {
                                         <span className="truncate text-xs">
                                             {user.email}
                                         </span>
+                                        {user.role && (
+                                            <span className="text-muted-foreground truncate text-xs">
+                                                {user.role}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </DropdownMenuLabel>

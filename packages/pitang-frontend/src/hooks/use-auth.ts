@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import fetcher from '@/lib/fetcher';
 import FetcherError from '@/lib/FetcherError';
 
-import type { LoginSchema } from '@/zodSchemas';
+import type { LoginSchema, RegisterSchema } from '@/zodSchemas';
 
 function getCookie(cookieName: string) {
     return document.cookie
@@ -17,7 +17,7 @@ export function useAuth() {
     const navigate = useNavigate();
 
     async function getAuthenticatedUser() {
-        return fetcher('/auth/me', {
+        return fetcher('/api/me', {
             headers: {
                 Authorization: `Bearer ${getCookie('@pitang/accessToken')}`,
             },
@@ -32,17 +32,36 @@ export function useAuth() {
 
     async function handleLogin(data: LoginSchema) {
         try {
-            const response = await fetcher.post('/auth/login', {
-                expiresInMins: 90,
+            const response = await fetcher.post('/api/login', {
+                email: data.email,
                 password: data.password,
-                username: data.username,
             });
 
             toast.success('Welcome...');
 
-            document.cookie = `@pitang/accessToken=${response.accessToken}; path=/; Max-Age=86400`;
+            document.cookie = `@pitang/accessToken=${response.token}; path=/; Max-Age=86400`;
 
             navigate({ to: '/dashboard' });
+        } catch (error) {
+            if (error instanceof FetcherError) {
+                toast.error(error.info.message);
+            }
+        }
+    }
+
+    async function handleRegister(data: RegisterSchema) {
+        try {
+            await fetcher.post('/api/users', {
+                bornDate: data.bornDate,
+                email: data.email,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                password: data.password,
+            });
+
+            toast.success('Account created! You can now login.');
+
+            navigate({ to: '/login' });
         } catch (error) {
             if (error instanceof FetcherError) {
                 toast.error(error.info.message);
@@ -54,5 +73,6 @@ export function useAuth() {
         getAuthenticatedUser,
         handleLogin,
         handleLogout,
+        handleRegister,
     };
 }

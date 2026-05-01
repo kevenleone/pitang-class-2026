@@ -23,8 +23,8 @@ export function LoginForm({
 
     const { formState, handleSubmit, register } = useForm<LoginSchema>({
         defaultValues: {
+            email: '',
             password: '',
-            username: '',
         },
         mode: 'onBlur',
         resolver: zodResolver(loginSchema),
@@ -46,20 +46,21 @@ export function LoginForm({
                         Login to your account
                     </h1>
                     <p className="text-muted-foreground text-balance text-sm">
-                        Enter your username below to login to your account
+                        Enter your email below to login to your account
                     </p>
                 </div>
 
-                <Field data-invalid={!!formState.errors.username}>
-                    <FieldLabel htmlFor="username">Username</FieldLabel>
+                <Field data-invalid={!!formState.errors.email}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
                     <Input
-                        aria-invalid={!!formState.errors.username}
-                        id="username"
-                        {...register('username')}
+                        aria-invalid={!!formState.errors.email}
+                        id="email"
+                        type="email"
+                        {...register('email')}
                     />
-                    {formState.errors.username?.message && (
+                    {formState.errors.email?.message && (
                         <FieldDescription>
-                            {formState.errors.username?.message}
+                            {formState.errors.email?.message}
                         </FieldDescription>
                     )}
                 </Field>

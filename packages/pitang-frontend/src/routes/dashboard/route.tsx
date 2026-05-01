@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
+import { createFileRoute, Outlet, redirect, useLocation } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
 
 import { AppSidebar } from '@/components/app-sidebar';
@@ -16,7 +16,19 @@ import {
     SidebarTrigger,
 } from '@/components/ui/sidebar';
 
+function getCookie(cookieName: string) {
+    return document.cookie
+        .split('; ')
+        .find((c) => c.startsWith(`${cookieName}=`))
+        ?.split('=')[1];
+}
+
 export const Route = createFileRoute('/dashboard')({
+    beforeLoad: () => {
+        if (!getCookie('@pitang/accessToken')) {
+            throw redirect({ to: '/login' });
+        }
+    },
     component: RouteComponent,
 });
 

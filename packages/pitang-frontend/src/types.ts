@@ -1,37 +1,12 @@
 export interface LoggedUser {
-    address: Address;
-    age: number;
-    bank: Bank;
-    birthDate: string;
-    bloodGroup: string;
-    company: Company;
-    crypto: Crypto;
-    ein: string;
+    id: string;
     email: string;
-    eyeColor: string;
     firstName: string;
-    gender: string;
-    hair: Hair;
-    height: number;
-    id: number;
-    image: string;
-    ip: string;
     lastName: string;
-    macAddress: string;
-    maidenName: string;
-    password: string;
-    phone: string;
-    role: string;
-    ssn: string;
-    university: string;
-    userAgent: string;
-    username: string;
-    weight: number;
-}
-
-export interface Hair {
-    color: string;
-    type: string;
+    role: 'ADMIN' | 'COLLABORATOR' | 'USER';
+    bornDate: string;
+    createdAt: string;
+    modifiedAt: string;
 }
 
 export interface Address {
@@ -139,13 +114,14 @@ export interface Product {
 // }
 
 export interface Post {
-    body: string;
     id: number;
-    reactions: Reactions;
-    tags: string[];
+    slug: string;
     title: string;
-    userId: number;
+    body: string;
+    tags: string[];
     views: number;
+    userId: string;
+    user?: Pick<LoggedUser, 'id' | 'email' | 'firstName' | 'lastName'>;
 }
 
 export interface Reactions {

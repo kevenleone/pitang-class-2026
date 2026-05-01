@@ -7,11 +7,10 @@ import type { Post } from '@/types';
 export const Route = createFileRoute('/dashboard/posts/$id')({
     component: RouteComponent,
     loader: async ({ params: { id } }) => {
-        const post = await fetcher<Post>(`/posts/${id}`);
+        const post = await fetcher<Post>(`/api/post/${id}`);
 
         return post;
     },
-    staleTime: 60 * 1000,
 });
 
 function RouteComponent() {

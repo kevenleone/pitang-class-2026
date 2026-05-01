@@ -29,12 +29,16 @@ function RouteComponent() {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-2xl">{post.title}</CardTitle>
-                    <CardDescription>By User {post.userId}</CardDescription>
+                    <CardDescription>
+                        By {post.user
+                            ? `${post.user.firstName} ${post.user.lastName}`
+                            : `User ${post.userId}`}
+                    </CardDescription>
                     <CardAction>
                         <Button
                             render={
                                 <Link
-                                    params={{ id: post.id.toString() }}
+                                    params={{ id: post.slug }}
                                     to="/dashboard/posts/$id/edit"
                                 >
                                     Edit
@@ -61,8 +65,6 @@ function RouteComponent() {
                     </div>
 
                     <div className="text-muted-foreground flex items-center gap-6 text-sm">
-                        <span>👍 {post.reactions?.likes} likes</span>
-                        <span>👎 {post.reactions?.dislikes} dislikes</span>
                         <span>👁️ {post.views} views</span>
                     </div>
                 </CardContent>
