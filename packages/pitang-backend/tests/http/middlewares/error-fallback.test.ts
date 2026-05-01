@@ -14,7 +14,7 @@ describe('errorFallbackMiddleware', () => {
         const request = {} as Request;
         const response = {
             json: mock(() => response),
-            status: mock((code: number) => response),
+            status: mock(() => response),
         } as unknown as Response;
         const error = new Error('Test error');
 

@@ -15,6 +15,7 @@ import {
 import { userSchema } from '../../schemas';
 import { getLoggedUser } from '../../util/get-logged-user';
 
+import type { User } from '../../generated/prisma/client';
 import type { Request, Response } from 'express';
 
 export async function getUsers(_request: Request, response: Response) {
@@ -59,7 +60,7 @@ export async function postUser(request: Request, response: Response) {
 
     logger.info(user, 'User registered');
 
-    delete (user as any).password;
+    delete (user as Partial<User>).password;
 
     response.status(201).json(user);
 }
@@ -112,6 +113,15 @@ export async function deleteUser(request: Request, response: Response) {
     response.status(204).send();
 }
 
+export async function me(request: Request, response: Response) {
+    const user = getLoggedUser(request);
+
+    delete (user as Partial<User>).password;
+    delete (user as Partial<User>).verificationToken;
+
+    response.json(user);
+}
+
 export async function login(request: Request, response: Response) {
     const { email, password } = request.body;
 
@@ -126,7 +136,7 @@ export async function login(request: Request, response: Response) {
     }
 
     if (bcrypt.compareSync(password, user.password)) {
-        delete (user as any).password;
+        delete (user as Partial<User>).password;
 
         return response.status(200).json({
             token: jsonwebtoken.sign(user, environment.JWT_SECRET, {

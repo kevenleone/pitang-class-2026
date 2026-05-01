@@ -7,6 +7,7 @@ export function errorFallbackMiddleware(
     error: Error,
     request: Request,
     response: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction,
 ) {
     logger.error(error);

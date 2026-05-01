@@ -1,22 +1,22 @@
 info:
-  name: Login
-  type: http
-  seq: 4
+    name: Login
+    type: http
+    seq: 4
 
 http:
-  method: POST
-  url: http://localhost:3333/api/login
-  body:
-    type: json
-    data: |-
-      {
-        "password": "123456",
-        "email": "keven.leoene@a3ebc.me"
-      }
-  auth: inherit
+    method: POST
+    url: http://localhost:3333/api/login
+    body:
+        type: json
+        data: |-
+            {
+              "password": "123456",
+              "email": "keven.leoene@a3ebc.me"
+            }
+    auth: inherit
 
 settings:
-  encodeUrl: true
-  timeout: 0
-  followRedirects: true
-  maxRedirects: 5
+    encodeUrl: true
+    timeout: 0
+    followRedirects: true
+    maxRedirects: 5

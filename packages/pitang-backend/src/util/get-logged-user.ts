@@ -1,6 +1,10 @@
 import type { User } from '../generated/prisma/client';
 import type { Request } from 'express';
 
-export function getLoggedUser(request: Request) {
-    return (request as any).loggedUser as User;
+interface AuthenticatedRequest extends Request {
+    loggedUser: User;
+}
+
+export function getLoggedUser(request: Request): User {
+    return (request as AuthenticatedRequest).loggedUser;
 }

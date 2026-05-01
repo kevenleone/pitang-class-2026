@@ -6,6 +6,7 @@ import {
     getUser,
     getUsers,
     login,
+    me,
     patchUser,
     postUser,
 } from '../controllers/user.controller';
@@ -14,6 +15,7 @@ import { roleRestrictedMiddleware } from '../middlewares/role.restricted.middlew
 const userRouter = express.Router();
 
 userRouter.post('/login', login);
+userRouter.get('/me', me);
 userRouter.get('/users', roleRestrictedMiddleware([Role.ADMIN]), getUsers);
 userRouter.get('/users/:id', roleRestrictedMiddleware([Role.ADMIN]), getUser);
 userRouter.post('/users', postUser);

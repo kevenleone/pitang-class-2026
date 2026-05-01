@@ -1,3 +1,3 @@
 import { config } from 'dotenv';
 
-config({ path: '.env.test', override: true });
+config({ override: true, path: '.env.test' });

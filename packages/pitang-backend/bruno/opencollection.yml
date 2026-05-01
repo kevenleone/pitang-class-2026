@@ -1,10 +1,10 @@
 opencollection: 1.0.0
 
 info:
-  name: Pitang Backend
+    name: Pitang Backend
 bundled: false
 extensions:
-  bruno:
-    ignore:
-      - node_modules
-      - .git
+    bruno:
+        ignore:
+            - node_modules
+            - .git

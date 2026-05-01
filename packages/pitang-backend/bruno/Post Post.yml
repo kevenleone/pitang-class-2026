@@ -1,26 +1,26 @@
 info:
-  name: Post Post
-  type: http
-  seq: 5
+    name: Post Post
+    type: http
+    seq: 5
 
 http:
-  method: POST
-  url: http://localhost:3333/api/post
-  headers:
-    - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiYzg2NWFlLTI0OWUtNDJmOC1iMzIyLTA2YjFhOTIzYjJjNSIsImVtYWlsIjoia2V2ZW4ubGVvZW5lQGEzZWJjLm1lIiwiZmlyc3ROYW1lIjoiS2V2ZW4iLCJsYXN0TmFtZSI6Ikxlb25lIiwiYm9ybkRhdGUiOiIxOTk2LTAyLTE5VDIzOjMwOjU5LjI0OVoiLCJjcmVhdGVkQXQiOiIyMDI2LTA0LTA4VDAwOjM0OjA3Ljc1N1oiLCJtb2RpZmllZEF0IjoiMjAyNi0wNC0wOFQwMDozNDowNy43NTdaIiwiaWF0IjoxNzc1Nzc4MjEwLCJleHAiOjE3NzU3ODAwMTB9.QBAOyTL6vY9_VNvnvf9vM7jVN-E2s2kBO6T0cvz1lyo
-  body:
-    type: json
-    data: |-
-      {
-        "title": "Welcome to the jungle",
-        "body": "Aaaaaaaaa",
-        "tags": ["music", "guns"]
-      }
-  auth: inherit
+    method: POST
+    url: http://localhost:3333/api/post
+    headers:
+        - name: Authorization
+          value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiYzg2NWFlLTI0OWUtNDJmOC1iMzIyLTA2YjFhOTIzYjJjNSIsImVtYWlsIjoia2V2ZW4ubGVvZW5lQGEzZWJjLm1lIiwiZmlyc3ROYW1lIjoiS2V2ZW4iLCJsYXN0TmFtZSI6Ikxlb25lIiwiYm9ybkRhdGUiOiIxOTk2LTAyLTE5VDIzOjMwOjU5LjI0OVoiLCJjcmVhdGVkQXQiOiIyMDI2LTA0LTA4VDAwOjM0OjA3Ljc1N1oiLCJtb2RpZmllZEF0IjoiMjAyNi0wNC0wOFQwMDozNDowNy43NTdaIiwiaWF0IjoxNzc1Nzc4MjEwLCJleHAiOjE3NzU3ODAwMTB9.QBAOyTL6vY9_VNvnvf9vM7jVN-E2s2kBO6T0cvz1lyo
+    body:
+        type: json
+        data: |-
+            {
+              "title": "Welcome to the jungle",
+              "body": "Aaaaaaaaa",
+              "tags": ["music", "guns"]
+            }
+    auth: inherit
 
 settings:
-  encodeUrl: true
-  timeout: 0
-  followRedirects: true
-  maxRedirects: 5
+    encodeUrl: true
+    timeout: 0
+    followRedirects: true
+    maxRedirects: 5

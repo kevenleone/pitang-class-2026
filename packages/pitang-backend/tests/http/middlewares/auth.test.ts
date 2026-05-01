@@ -29,7 +29,7 @@ function createMocks(overrides: Partial<Request> = {}) {
     const response = {
         json: mock(() => response),
         status: mock((code: number) => {
-            (response as any)._statusCode = code;
+            (response as Record<string, unknown>)._statusCode = code;
 
             return response;
         }),
