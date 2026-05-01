@@ -1,0 +1,124 @@
+{
+    "info": {
+        "_postman_id": "c6175308-6cf5-4fd6-909c-c1bbcfd9f6b1",
+        "name": "Pitang Challenge",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "652055"
+    },
+    "item": [
+        {
+            "name": "Login",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        },
+        {
+            "name": "Create User",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"bornDate\": \"1996-02-19T00:00:00.000Z\",\n    \"email\": \"kevenleone@qwe.com\",\n    \"firstName\": \"Keven\",\n    \"lastName\": \"Leone\",\n    \"password\": \"123456\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3333/api/users",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3333",
+                    "path": ["api", "users"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Me",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"bornDate\": \"1996-02-19T00:00:00.000Z\",\n    \"email\": \"kevenleone@qwe.com\",\n    \"firstName\": \"Keven\",\n    \"lastName\": \"Leone\",\n    \"password\": \"123456\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3333/api/users",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3333",
+                    "path": ["api", "users"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Patch User",
+            "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"firstName\": \"Keven 1\",\n    \"lastName\": \"Leone 1\",\n    \"role\": \"USER\",\n    \"bornDate\": \"1996-03-19T00:00:00.000Z\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3333/api/users/ccc122ff-850f-4900-a661-f1ec571d7f50",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3333",
+                    "path": [
+                        "api",
+                        "users",
+                        "ccc122ff-850f-4900-a661-f1ec571d7f50"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [""]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [""]
+            }
+        }
+    ]
+}
